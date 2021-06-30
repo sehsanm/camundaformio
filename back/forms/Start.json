@@ -1,0 +1,228 @@
+{
+    "components": [
+      {
+        "title": "APC Request Form",
+        "theme": "primary",
+        "collapsible": false,
+        "key": "apcRequestForm",
+        "type": "panel",
+        "label": "Panel",
+        "input": false,
+        "tableView": false,
+        "components": [
+          {
+            "html": "<p><span class=\"text-big\"><strong>Journal and Publisher</strong></span></p>",
+            "label": "Content",
+            "refreshOnChange": false,
+            "key": "content",
+            "type": "content",
+            "input": false,
+            "tableView": false
+          },
+          {
+            "label": "Columns",
+            "columns": [
+              {
+                "components": [
+                  {
+                    "label": "Publisher Name",
+                    "widget": "choicesjs",
+                    "tableView": true,
+                    "dataSrc": "url",
+                    "data": {
+                      "url": "https://virtserver.swaggerhub.com/notionwave/Incoming/1.0.0/organizations",
+                      "headers": [
+                        {
+                          "key": "",
+                          "value": ""
+                        }
+                      ]
+                    },
+                    "dataType": "object",
+                    "template": "<span>{{ item.title }}</span>",
+                    "selectThreshold": 0.3,
+                    "key": "publisher",
+                    "type": "select",
+                    "input": true,
+                    "disableLimit": false
+                  }
+                ],
+                "width": 6,
+                "offset": 0,
+                "push": 0,
+                "pull": 0,
+                "size": "md",
+                "currentWidth": 6
+              },
+              {
+                "components": [
+                  {
+                    "label": "Journal Name",
+                    "widget": "choicesjs",
+                    "tableView": true,
+                    "dataSrc": "url",
+                    "data": {
+                      "url": "https://virtserver.swaggerhub.com/notionwave/Incoming/1.0.0/journals",
+                      "headers": [
+                        {
+                          "key": "",
+                          "value": ""
+                        }
+                      ]
+                    },
+                    "template": "<span>{{ item.title }} ({{ item.printISSN }} - {{ item.onlineISSN }})</span>",
+                    "refreshOn": "publisher",
+                    "clearOnRefresh": true,
+                    "searchEnabled": false,
+                    "selectThreshold": 0.3,
+                    "validate": {
+                      "select": false
+                    },
+                    "key": "journal",
+                    "type": "select",
+                    "searchField": "searchString",
+                    "filter": "publisherId={{form.publisher}}",
+                    "input": true,
+                    "disableLimit": false
+                  }
+                ],
+                "width": 6,
+                "offset": 0,
+                "push": 0,
+                "pull": 0,
+                "size": "md",
+                "currentWidth": 6
+              }
+            ],
+            "key": "columns",
+            "type": "columns",
+            "input": false,
+            "tableView": false
+          },
+          {
+            "html": "<p><span class=\"text-big\"><strong>Article</strong></span></p>",
+            "label": "Content",
+            "refreshOnChange": false,
+            "key": "content1",
+            "type": "content",
+            "input": false,
+            "tableView": false
+          },
+          {
+            "label": "Article Title",
+            "tableView": true,
+            "key": "articleTitle",
+            "type": "textfield",
+            "input": true
+          },
+          {
+            "label": "Article PDF File",
+            "description": "Please upload full-text version of the article",
+            "tableView": false,
+            "storage": "base64",
+            "webcam": false,
+            "fileTypes": [
+              {
+                "label": "",
+                "value": ""
+              }
+            ],
+            "fileMinSize": "100KB",
+            "fileMaxSize": "5MB",
+            "key": "articlePdfFile",
+            "type": "file",
+            "input": true
+          },
+          {
+            "label": "Subject",
+            "columns": [
+              {
+                "components": [
+                  {
+                    "label": "Main Subject",
+                    "widget": "choicesjs",
+                    "tableView": true,
+                    "dataSrc": "url",
+                    "data": {
+                      "url": "https://virtserver.swaggerhub.com/notionwave/Incoming/1.0.0/subjects",
+                      "headers": [
+                        {
+                          "key": "",
+                          "value": ""
+                        }
+                      ]
+                    },
+                    "template": "<span>{{ item.title }}</span>",
+                    "selectThreshold": 0.3,
+                    "validate": {
+                      "select": false
+                    },
+                    "key": "mainSubject",
+                    "type": "select",
+                    "searchField": "searchString",
+                    "input": true,
+                    "disableLimit": false
+                  }
+                ],
+                "width": 6,
+                "offset": 0,
+                "push": 0,
+                "pull": 0,
+                "size": "md",
+                "currentWidth": 6
+              },
+              {
+                "components": [
+                  {
+                    "label": "Subject",
+                    "widget": "choicesjs",
+                    "tableView": true,
+                    "dataSrc": "url",
+                    "data": {
+                      "url": "https://virtserver.swaggerhub.com/notionwave/Incoming/1.0.0/subjects",
+                      "headers": [
+                        {
+                          "key": "",
+                          "value": ""
+                        }
+                      ]
+                    },
+                    "template": "<span>{{ item.title }}</span>",
+                    "refreshOn": "mainSubject",
+                    "selectThreshold": 0.3,
+                    "validate": {
+                      "select": false
+                    },
+                    "key": "subject1",
+                    "type": "select",
+                    "searchField": "searchString",
+                    "filter": "parentId={{ form.mainSubject.id }}",
+                    "input": true,
+                    "disableLimit": false
+                  }
+                ],
+                "width": 6,
+                "offset": 0,
+                "push": 0,
+                "pull": 0,
+                "size": "md",
+                "currentWidth": 6
+              }
+            ],
+            "key": "subject",
+            "type": "columns",
+            "input": false,
+            "tableView": false
+          }
+        ]
+      },
+      {
+        "type": "button",
+        "label": "Submit",
+        "key": "submit",
+        "disableOnInvalid": true,
+        "input": true,
+        "tableView": false
+      }
+    ]
+  }

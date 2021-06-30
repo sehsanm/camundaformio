@@ -7,13 +7,19 @@ import ApiManager from './ApiManager' ;
 
 function FormEdit() {
     const [form , setForm] = useState([]) ; 
-    const { formName } = useParams();
+    const { formName , folderName } = useParams();
     useEffect(() => {
-        ApiManager.getForm(formName).then(form => setForm(form.data)) ;
+        ApiManager.getForm(folderName + '/' + formName).then(form => setForm(form.data)) ;
+        window.addEventListener('unhandledrejection', function (event) {
+            //A bug in FormIO builder component: 
+            //https://github.com/formio/formio.js/issues/4048
+            console.warn(`UNHANDLED PROMISE REJECTION: ${event.reason}`);
+            event.preventDefault();
+          });
     }, []) ; 
 
     const submitForm = (e) => {
-        ApiManager.updateForm(formName , form) ; 
+        ApiManager.updateForm(folderName + '/' + formName , form) ; 
         e.preventDefault() ; 
     }
 

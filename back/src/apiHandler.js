@@ -14,6 +14,18 @@ let  taskService = new camClient.resource('task');
 let  processDefinitionService = new camClient.resource('process-definition');
 
 
+module.exports.listForms = function (req, res) {
+    ret = [] ; 
+    fs.promises.readdir(FORMS_DIR).then(folders => {
+        promises = [] ;
+        folders.forEach(folder => {
+            console.log('FF-->' , folder)
+            var p = fs.promises.readdir(FORMS_DIR + '/' + folder )
+            promises.push(p.then(files =>  files.forEach(file => ret.push({folder: folder , file: file})) )) ; 
+        });
+        return Promise.all(promises) ; 
+    }).then(()=> res.send(ret) );  
+}
 
 module.exports.updateForm = function (req, res) {
     console.log("Writing file: " + req.params.formName + " -- " + JSON.stringify(req.body) ) ; 
@@ -27,19 +39,7 @@ module.exports.updateForm = function (req, res) {
     }) ;     
 }
 
-module.exports.listForms = function (req, res) {
-    ret = [] ; 
 
-    fs.readdir(FORMS_DIR, (err, files) => {
-        files.forEach(file => {
-            ret.push({
-                name: file, 
-                location:  "/forms/" + file 
-            })
-        });
-        res.send(ret) ; 
-      });    
-}
 
 module.exports.submitForm = function (req, res) {
     var data = {} ; 
@@ -59,6 +59,6 @@ module.exports.startProcess = function (req, res) {
     console.log('Submitting form:' , data); 
     processDefinitionService.submitForm(data , console.log) ; 
     res.send("Process Created");
-    
+
 }
 

@@ -12,10 +12,10 @@ function App() {
   return (
     <Router> 
         <Switch>
-        <Route path="/forms/:formName/submit.html">
+        <Route path="/forms/:folderName/:formName.html">
             <FormSubmit />
         </Route>
-        <Route path="/forms/:formName">
+        <Route path="/forms/:folderName/:formName">
             <FormEdit />
         </Route>
         <Route path="/">

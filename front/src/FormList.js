@@ -12,8 +12,8 @@ export default  function() {
     }, []) ; 
     console.log(forms) ;
     return (
-        <ul>
-            {forms.map( el =><li> <Link key={el.name}  to={"/forms/" + el.name}>  {el.name} </Link> </li>)}
+        <ul class="list-group">
+            {forms.map( el =><li class="list-group-item"> <Link key={el.name}  to={"/forms/" + el.folder  + '/' + el.file}> {el.folder}  -  {el.file} </Link> </li>)}
         </ul>    
     )
      

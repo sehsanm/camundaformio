@@ -1,4 +1,9 @@
 {
+    "project" : "59514e10ef644f006d512db9" , 
+    "title": "Registration",
+    "name": "registration",
+    "path": "register",
+    "type": "form",
     "components": [
       {
         "title": "APC Request Form",

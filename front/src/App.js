@@ -4,13 +4,15 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-
+import Navbar from "./Navbar" ; 
 import FormList from "./FormList" ; 
 import FormEdit from "./FormEdit" ; 
 import FormSubmit from './FormSubmit';
+
 function App() {
   return (
     <Router> 
+        <Navbar />
         <Switch>
         <Route path="/forms/:folderName/:formName.html">
             <FormSubmit />

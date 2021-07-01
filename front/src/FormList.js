@@ -15,7 +15,7 @@ export default  function() {
         <div>
             <h2>List of current forms: </h2>
             <ul class="list-group">
-                {forms.map( el =><li class="list-group-item"> <Link key={el.name}  to={"/forms/" + el.folder  + '/' + el.file}> {el.folder}  -  {el.file} </Link> </li>)}
+                {forms.map( el =><li class="list-group-item"> <Link key={el.name}  to={"/forms/" + el.folder  + '/' + el.file + '/edit'}> {el.folder}  -  {el.file} </Link> </li>)}
             </ul>
         </div>    
     )

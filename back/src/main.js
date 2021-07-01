@@ -18,7 +18,7 @@ express()
   })
   .use('/forms', express.static(FORMS_DIR))
   .get('/api/forms', listForms)
-  .post('/api/forms/:formName', updateForm)
+  .post('/api/forms/:folderName/:formName', updateForm)
   .post('/api/task/:taskId' , submitForm)
   .post('/api/process/:processDefinitionKey' , startProcess)
 

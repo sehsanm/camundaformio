@@ -14,11 +14,11 @@ function App() {
     <Router> 
         <Navbar />
         <Switch>
-        <Route path="/forms/:folderName/:formName">
-            <FormSubmit />
+        <Route path="/forms/:folderName/:formName/edit">
+            <FormEdit />
         </Route>
         <Route path="/forms/:folderName/:formName">
-            <FormEdit />
+            <FormSubmit />
         </Route>
         <Route path="/">
             <FormList />

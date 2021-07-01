@@ -28,15 +28,8 @@ module.exports.listForms = function (req, res) {
 }
 
 module.exports.updateForm = function (req, res) {
-    console.log("Writing file: " + req.params.formName + " -- " + JSON.stringify(req.body) ) ; 
-    fs.writeFile(FORMS_DIR +'/' + req.params.formName , JSON.stringify(req.body, null , 4) , err => {
-        if (err) {
-          console.error(err)
-          return
-        }
-        //file written successfully
-        res.send("File Updated")
-    }) ;     
+    fs.promises.writeFile(FORMS_DIR +'/' + req.params.folderName + '/' + req.params.formName, JSON.stringify(req.body, null , 4))
+    .then(()=> res.send('File Updated')) ;     
 }
 
 

@@ -33,5 +33,5 @@ It will run server on  port 3000
 
 ## Camunda Modeller 
 
-In modeller in order to allow integration with tasklist application  you can specify  http://localhost:3000/forms/:folderName/:formName.html 
+In modeller in order to allow integration with tasklist application  you can specify following Form Key for the form. This will force the  Tasklist application to open form in our fontend application   http://localhost:3000/forms/:folderName/:formName.json  
 

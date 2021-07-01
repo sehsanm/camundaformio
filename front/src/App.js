@@ -14,7 +14,7 @@ function App() {
     <Router> 
         <Navbar />
         <Switch>
-        <Route path="/forms/:folderName/:formName.html">
+        <Route path="/forms/:folderName/:formName">
             <FormSubmit />
         </Route>
         <Route path="/forms/:folderName/:formName">

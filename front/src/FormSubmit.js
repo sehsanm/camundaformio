@@ -13,7 +13,7 @@ function FormSubmit() {
 
     const [form , setForm] = useState([]) ; 
     useEffect(() => {
-        ApiManager.getForm(folderName + '/' + formName + '.json').then(form => setForm(form.data)) ;
+        ApiManager.getForm(folderName + '/' + formName ).then(form => setForm(form.data)) ;
     }, []) ; 
     const submitData = (data) => {
         console.log('Test!' , data) ; 

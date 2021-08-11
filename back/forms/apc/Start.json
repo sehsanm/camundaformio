@@ -1,5 +1,8 @@
 {
-
+    "variables": {
+        "workflowServiceAddress": "https://iknito-workflow.vercel.app/api/v1",
+        "subjectTreeId": "60fbbcac0023940006e0d9cb"
+    },
     "components": [
         {
             "title": "APC Request Form",
@@ -175,7 +178,7 @@
                                         ],
                                         "resource": "",
                                         "json": "",
-                                        "url": "https://virtserver.swaggerhub.com/notionwave/Incoming/1.0.0/organizations",
+                                        "url": "{{form.variables.workflowServiceAddress}}/workflow/organizations",
                                         "headers": [
                                             {
                                                 "key": "",
@@ -246,7 +249,7 @@
                                     "selectFields": "",
                                     "searchField": "",
                                     "minSearch": 0,
-                                    "filter": "orgType=Institute",
+                                    "filter": "type=Institute",
                                     "limit": 100,
                                     "redrawOn": "",
                                     "input": true,
@@ -265,7 +268,7 @@
                                         "include": "score",
                                         "threshold": 0.3
                                     },
-                                    "id": "e77jvx",
+                                    "id": "e82btch",
                                     "defaultValue": {},
                                     "selectValues": "",
                                     "sort": ""
@@ -473,7 +476,7 @@
                                         ],
                                         "resource": "",
                                         "json": "",
-                                        "url": "https://virtserver.swaggerhub.com/notionwave/Incoming/1.0.0/organizations",
+                                        "url": "{{form.variables.workflowServiceAddress}}/workflow/organizations",
                                         "headers": [
                                             {
                                                 "key": "",
@@ -513,7 +516,8 @@
                                         "json": "",
                                         "strictDateValidation": false,
                                         "multiple": false,
-                                        "unique": false
+                                        "unique": false,
+                                        "select": false
                                     },
                                     "unique": false,
                                     "errorLabel": "",
@@ -542,9 +546,9 @@
                                         "filter": {}
                                     },
                                     "selectFields": "",
-                                    "searchField": "",
+                                    "searchField": "title",
                                     "minSearch": 0,
-                                    "filter": "orgType=Publisher",
+                                    "filter": "type=Publisher",
                                     "limit": 100,
                                     "redrawOn": "",
                                     "input": true,
@@ -563,7 +567,7 @@
                                         "include": "score",
                                         "threshold": 0.3
                                     },
-                                    "id": "exii73p",
+                                    "id": "e7kuk2p",
                                     "defaultValue": {},
                                     "selectValues": "",
                                     "sort": ""
@@ -605,7 +609,7 @@
                                         ],
                                         "resource": "",
                                         "json": "",
-                                        "url": "https://virtserver.swaggerhub.com/notionwave/Incoming/1.0.0/journals",
+                                        "url": "{{form.variables.workflowServiceAddress}}/workflow/forms-data/journals",
                                         "headers": [
                                             {
                                                 "key": "",
@@ -675,7 +679,7 @@
                                         "filter": {}
                                     },
                                     "selectFields": "",
-                                    "searchField": "searchString",
+                                    "searchField": "title",
                                     "minSearch": 0,
                                     "filter": "publisherId={{data.publisher.id}}",
                                     "limit": 100,
@@ -696,10 +700,10 @@
                                         "include": "score",
                                         "threshold": 0.3
                                     },
-                                    "id": "eur2ob9",
+                                    "id": "edtv3ly",
+                                    "defaultValue": {},
                                     "selectValues": "",
-                                    "sort": "",
-                                    "defaultValue": {}
+                                    "sort": ""
                                 }
                             ],
                             "width": 6,
@@ -1020,7 +1024,7 @@
                         {
                             "components": [
                                 {
-                                    "label": "Main Subject",
+                                    "label": "Subject Category",
                                     "labelPosition": "top",
                                     "widget": "choicesjs",
                                     "placeholder": "",
@@ -1046,7 +1050,7 @@
                                         ],
                                         "resource": "",
                                         "json": "",
-                                        "url": "https://virtserver.swaggerhub.com/notionwave/Incoming/1.0.0/subjects",
+                                        "url": "{{form.variables.workflowServiceAddress}}/workflow/forms-data/subjects",
                                         "headers": [
                                             {
                                                 "key": "",
@@ -1118,7 +1122,7 @@
                                     "selectFields": "",
                                     "searchField": "searchString",
                                     "minSearch": 0,
-                                    "filter": "",
+                                    "filter": "treeId={{form.variables.subjectTreeId}}",
                                     "limit": 100,
                                     "redrawOn": "",
                                     "input": true,
@@ -1137,13 +1141,13 @@
                                         "include": "score",
                                         "threshold": 0.3
                                     },
-                                    "id": "ew4dp39",
+                                    "id": "ev9v6hg",
                                     "defaultValue": {},
                                     "selectValues": "",
                                     "sort": ""
                                 },
                                 {
-                                    "label": "Subject",
+                                    "label": "Subject Area",
                                     "labelPosition": "top",
                                     "widget": "choicesjs",
                                     "placeholder": "",
@@ -1169,7 +1173,7 @@
                                         ],
                                         "resource": "",
                                         "json": "",
-                                        "url": "https://virtserver.swaggerhub.com/notionwave/Incoming/1.0.0/subjects",
+                                        "url": "{{form.variables.workflowServiceAddress}}/workflow/forms-data/subjects",
                                         "headers": [
                                             {
                                                 "key": "",
@@ -1184,7 +1188,7 @@
                                     "template": "<span>{{ item.title }}</span>",
                                     "refreshOn": "mainSubject",
                                     "refreshOnBlur": "",
-                                    "clearOnRefresh": false,
+                                    "clearOnRefresh": true,
                                     "searchEnabled": true,
                                     "selectThreshold": 0.3,
                                     "readOnlyValue": false,
@@ -1241,7 +1245,7 @@
                                     "selectFields": "",
                                     "searchField": "searchString",
                                     "minSearch": 0,
-                                    "filter": "parentId={{ form.mainSubject.id }}",
+                                    "filter": "parentSubjectId={{ data.mainSubject.id }}&treeId={{form.variables.subjectTreeId}}",
                                     "limit": 100,
                                     "redrawOn": "",
                                     "input": true,
@@ -1260,7 +1264,7 @@
                                         "include": "score",
                                         "threshold": 0.3
                                     },
-                                    "id": "e3i0g6",
+                                    "id": "ek848op",
                                     "defaultValue": {},
                                     "selectValues": "",
                                     "sort": ""
@@ -1279,7 +1283,7 @@
                                     "label": "Publish Price",
                                     "labelPosition": "top",
                                     "placeholder": "",
-                                    "description": "",
+                                    "description": "Please specify the price indicated by publisher for processing article.  ",
                                     "tooltip": "",
                                     "prefix": "",
                                     "suffix": "",
@@ -1356,7 +1360,7 @@
                                     "showCharCount": false,
                                     "showWordCount": false,
                                     "allowMultipleMasks": false,
-                                    "id": "ehgl7o",
+                                    "id": "e55ueaq",
                                     "defaultValue": null
                                 },
                                 {
@@ -1477,8 +1481,8 @@
                                         "include": "score",
                                         "threshold": 0.3
                                     },
-                                    "id": "eckcfym",
-                                    "defaultValue": ""
+                                    "id": "e7wii3",
+                                    "defaultValue": "usd"
                                 }
                             ],
                             "width": 6,
@@ -1558,7 +1562,7 @@
                     "labelPosition": "top",
                     "widget": "choicesjs",
                     "placeholder": "",
-                    "description": "",
+                    "description": "Based on the selection above please select one of the avialable policies to cover your publication charges",
                     "tooltip": "",
                     "customClass": "",
                     "tabindex": "",
@@ -1580,7 +1584,7 @@
                         ],
                         "resource": "",
                         "json": "",
-                        "url": "https://virtserver.swaggerhub.com/notionwave/Incoming/1.0.0/funds",
+                        "url": "https://virtserver.swaggerhub.com/notionwave/Incoming/1.0.0/policies",
                         "headers": [
                             {
                                 "key": "",
@@ -1592,7 +1596,7 @@
                     "dataType": "",
                     "idPath": "id",
                     "valueProperty": "",
-                    "template": "<span>{{ item.fundTitle}}</span>",
+                    "template": "<span>{{ item.policyTitle}} - {{ item.fundTitle}}</span>",
                     "refreshOn": "journal",
                     "refreshOnBlur": "",
                     "clearOnRefresh": true,
@@ -1624,7 +1628,7 @@
                     },
                     "unique": false,
                     "errorLabel": "",
-                    "key": "selectedFund",
+                    "key": "selectedPolicy",
                     "tags": [],
                     "properties": {},
                     "conditional": {
@@ -1670,7 +1674,7 @@
                         "include": "score",
                         "threshold": 0.3
                     },
-                    "id": "e5mfjye",
+                    "id": "ex0rh5d",
                     "defaultValue": {},
                     "selectValues": "",
                     "sort": ""
@@ -1685,7 +1689,7 @@
                             "value": ""
                         }
                     ],
-                    "content": "<h2>Fund Notes: </h2>\n<div>{{data.selectedFund.notes}}</div>",
+                    "content": "<h2>Fund Notes: </h2>\n<h3>{{data.selectedPolicy.fundTitle}} - {{data.selectedPolicy.policyTitle}}</h3>\n<p>{{data.selectedPolicy.notes}}</p>\n<p></p>",
                     "refreshOnChange": true,
                     "customClass": "",
                     "hidden": false,
@@ -1752,7 +1756,7 @@
                     "showCharCount": false,
                     "showWordCount": false,
                     "allowMultipleMasks": false,
-                    "id": "e0q0dij"
+                    "id": "erlnjgd"
                 }
             ],
             "placeholder": "",

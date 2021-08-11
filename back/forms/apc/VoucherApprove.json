@@ -1,13 +1,21 @@
 {
     "components": [
         {
-            "html": "<p>Hello <strong>from &nbsp;v</strong></p>",
-            "label": "Content",
-            "customClass": "",
+            "label": "HTML",
+            "tag": "p",
+            "className": "",
+            "attrs": [
+                {
+                    "attr": "",
+                    "value": ""
+                }
+            ],
+            "content": "<h2>Application Summary: </h2>\n<h3>{{data.selectedPolicy.fundTitle}} - {{data.selectedPolicy.policyTitle}}</h3>\n<p>{{data.selectedPolicy.note}}</p>\n\n<p>Applicant: {{data.startedBy.given_name}}</p>\n<p>Affiliation: {{data.affiliation.title}}</p>\n",
             "refreshOnChange": false,
+            "customClass": "",
             "hidden": false,
             "modalEdit": false,
-            "key": "content",
+            "key": "html",
             "tags": [],
             "properties": {},
             "conditional": {
@@ -27,7 +35,7 @@
                 "width": "",
                 "height": ""
             },
-            "type": "content",
+            "type": "htmlelement",
             "input": false,
             "placeholder": "",
             "prefix": "",
@@ -36,7 +44,7 @@
             "defaultValue": null,
             "protected": false,
             "unique": false,
-            "persistent": true,
+            "persistent": false,
             "clearOnHide": true,
             "refreshOn": "",
             "redrawOn": "",
@@ -69,10 +77,10 @@
             "showCharCount": false,
             "showWordCount": false,
             "allowMultipleMasks": false,
-            "id": "e0br3ba"
+            "id": "e98oas"
         },
         {
-            "label": "Please specify your Decision: ",
+            "label": "Voucher Approval Decision",
             "labelPosition": "top",
             "optionsLabelPosition": "right",
             "description": "",
@@ -88,13 +96,18 @@
             "modalEdit": false,
             "values": [
                 {
-                    "label": "Accept",
-                    "value": "accept",
+                    "label": "Approve",
+                    "value": "approve",
                     "shortcut": ""
                 },
                 {
                     "label": "Reject",
                     "value": "reject",
+                    "shortcut": ""
+                },
+                {
+                    "label": "Require More Information",
+                    "value": "requireMoreInformation",
                     "shortcut": ""
                 }
             ],
@@ -110,7 +123,7 @@
             "calculateServer": false,
             "allowCalculateOverride": false,
             "validate": {
-                "required": false,
+                "required": true,
                 "onlyAvailableItems": false,
                 "customMessage": "",
                 "custom": "",
@@ -121,7 +134,7 @@
                 "unique": false
             },
             "errorLabel": "",
-            "key": "decision",
+            "key": "voucherApprovalDecision",
             "tags": [],
             "properties": {},
             "conditional": {
@@ -157,13 +170,13 @@
             "allowMultipleMasks": false,
             "inputType": "radio",
             "fieldSet": false,
-            "id": "et9zbtn",
+            "id": "eqeb78a",
             "defaultValue": ""
         },
         {
-            "label": "Rejection Reason",
+            "label": "Decision Note",
             "labelPosition": "top",
-            "placeholder": "Please specify the rejection reason ",
+            "placeholder": "",
             "description": "",
             "tooltip": "",
             "prefix": "",
@@ -216,13 +229,13 @@
             },
             "unique": false,
             "errorLabel": "",
-            "key": "rejectionReason",
+            "key": "comment",
             "tags": [],
             "properties": {},
             "conditional": {
-                "show": false,
-                "when": "decision",
-                "eq": "reject",
+                "show": null,
+                "when": null,
+                "eq": "",
                 "json": ""
             },
             "customConditional": "",
@@ -247,60 +260,30 @@
             "inputType": "text",
             "inputMask": "",
             "fixedSize": true,
-            "id": "eld8un6",
+            "id": "ewkwt3",
             "defaultValue": ""
         },
         {
-            "label": "Upload",
-            "labelPosition": "top",
+            "label": "Submit Decision",
+            "action": "submit",
+            "showValidations": false,
+            "theme": "primary",
+            "size": "md",
+            "block": false,
+            "leftIcon": "",
+            "rightIcon": "",
+            "shortcut": "",
             "description": "",
             "tooltip": "",
             "customClass": "",
             "tabindex": "",
+            "disableOnInvalid": true,
             "hidden": false,
-            "hideLabel": false,
             "autofocus": false,
             "disabled": false,
             "tableView": false,
             "modalEdit": false,
-            "storage": "",
-            "dir": "",
-            "fileNameTemplate": "",
-            "image": false,
-            "uploadOnly": false,
-            "webcam": false,
-            "fileTypes": [
-                {
-                    "label": "",
-                    "value": ""
-                }
-            ],
-            "filePattern": "*",
-            "fileMinSize": "5KB",
-            "fileMaxSize": "1MB",
-            "multiple": false,
-            "persistent": true,
-            "protected": false,
-            "dbIndex": false,
-            "encrypted": false,
-            "redrawOn": "",
-            "clearOnHide": true,
-            "customDefaultValue": "",
-            "calculateValue": "",
-            "calculateServer": false,
-            "allowCalculateOverride": false,
-            "validate": {
-                "required": false,
-                "customMessage": "",
-                "custom": "",
-                "customPrivate": false,
-                "json": "",
-                "strictDateValidation": false,
-                "multiple": false,
-                "unique": false
-            },
-            "errorLabel": "",
-            "key": "file",
+            "key": "submit",
             "tags": [],
             "properties": {},
             "conditional": {
@@ -320,58 +303,23 @@
                 "width": "",
                 "height": ""
             },
-            "type": "file",
-            "imageSize": "200",
-            "input": true,
-            "placeholder": "",
-            "prefix": "",
-            "suffix": "",
-            "defaultValue": null,
-            "unique": false,
-            "refreshOn": "",
-            "dataGridLabel": false,
-            "widget": null,
-            "validateOn": "change",
-            "showCharCount": false,
-            "showWordCount": false,
-            "allowMultipleMasks": false,
-            "privateDownload": false,
-            "id": "e0qbhvk"
-        },
-        {
             "type": "button",
-            "label": "Submit",
-            "key": "submit",
-            "size": "md",
-            "block": false,
-            "action": "submit",
-            "disableOnInvalid": true,
-            "theme": "primary",
             "input": true,
             "placeholder": "",
             "prefix": "",
-            "customClass": "",
             "suffix": "",
             "multiple": false,
             "defaultValue": null,
             "protected": false,
             "unique": false,
             "persistent": false,
-            "hidden": false,
             "clearOnHide": true,
             "refreshOn": "",
             "redrawOn": "",
-            "tableView": false,
-            "modalEdit": false,
             "dataGridLabel": true,
             "labelPosition": "top",
-            "description": "",
             "errorLabel": "",
-            "tooltip": "",
             "hideLabel": false,
-            "tabindex": "",
-            "disabled": false,
-            "autofocus": false,
             "dbIndex": false,
             "customDefaultValue": "",
             "calculateValue": "",
@@ -379,7 +327,6 @@
             "widget": {
                 "type": "input"
             },
-            "attributes": {},
             "validateOn": "change",
             "validate": {
                 "required": false,
@@ -389,27 +336,13 @@
                 "multiple": false,
                 "unique": false
             },
-            "conditional": {
-                "show": null,
-                "when": null,
-                "eq": ""
-            },
-            "overlay": {
-                "style": "",
-                "left": "",
-                "top": "",
-                "width": "",
-                "height": ""
-            },
             "allowCalculateOverride": false,
             "encrypted": false,
             "showCharCount": false,
             "showWordCount": false,
-            "properties": {},
             "allowMultipleMasks": false,
-            "leftIcon": "",
-            "rightIcon": "",
-            "id": "eglohd"
+            "id": "e6a2nsp",
+            "saveOnEnter": false
         }
     ]
 }

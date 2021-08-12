@@ -476,7 +476,7 @@
                                         ],
                                         "resource": "",
                                         "json": "",
-                                        "url": "{{form.variables.workflowServiceAddress}}/workflow/organizations",
+                                        "url": "{{form.variables.workflowServiceAddress}}/workflow/forms-data/publishers?limit={{ limit }}&skip={{ skip }}",
                                         "headers": [
                                             {
                                                 "key": "",
@@ -514,10 +514,10 @@
                                         "custom": "",
                                         "customPrivate": false,
                                         "json": "",
+                                        "select": false,
                                         "strictDateValidation": false,
                                         "multiple": false,
-                                        "unique": false,
-                                        "select": false
+                                        "unique": false
                                     },
                                     "unique": false,
                                     "errorLabel": "",
@@ -546,7 +546,7 @@
                                         "filter": {}
                                     },
                                     "selectFields": "",
-                                    "searchField": "title",
+                                    "searchField": "publisherName",
                                     "minSearch": 0,
                                     "filter": "type=Publisher",
                                     "limit": 100,
@@ -567,7 +567,7 @@
                                         "include": "score",
                                         "threshold": 0.3
                                     },
-                                    "id": "e7kuk2p",
+                                    "id": "e5ep1g5",
                                     "defaultValue": {},
                                     "selectValues": "",
                                     "sort": ""
@@ -609,7 +609,7 @@
                                         ],
                                         "resource": "",
                                         "json": "",
-                                        "url": "{{form.variables.workflowServiceAddress}}/workflow/forms-data/journals",
+                                        "url": "{{form.variables.workflowServiceAddress}}/workflow/forms-data/journals?publisherId={{data.publisher.id}}&limit={{ limit }}&skip={{ skip }}",
                                         "headers": [
                                             {
                                                 "key": "",
@@ -623,7 +623,7 @@
                                     "valueProperty": "",
                                     "template": "<span>{{ item.title }} ({{ item.printISSN }} - {{ item.onlineISSN }})</span>",
                                     "refreshOn": "publisher",
-                                    "refreshOnBlur": "",
+                                    "refreshOnBlur": "publisher",
                                     "clearOnRefresh": true,
                                     "searchEnabled": false,
                                     "selectThreshold": 0.3,
@@ -681,7 +681,7 @@
                                     "selectFields": "",
                                     "searchField": "title",
                                     "minSearch": 0,
-                                    "filter": "publisherId={{data.publisher.id}}",
+                                    "filter": "",
                                     "limit": 100,
                                     "redrawOn": "",
                                     "input": true,
@@ -700,10 +700,8 @@
                                         "include": "score",
                                         "threshold": 0.3
                                     },
-                                    "id": "edtv3ly",
-                                    "defaultValue": {},
-                                    "selectValues": "",
-                                    "sort": ""
+                                    "id": "ebxu96k",
+                                    "defaultValue": {}
                                 }
                             ],
                             "width": 6,
@@ -1584,7 +1582,7 @@
                         ],
                         "resource": "",
                         "json": "",
-                        "url": "https://virtserver.swaggerhub.com/notionwave/Incoming/1.0.0/policies",
+                        "url": "{{form.variables.workflowServiceAddress}}/policies/{{data.journal._id}}",
                         "headers": [
                             {
                                 "key": "",
@@ -1655,7 +1653,7 @@
                     "selectFields": "",
                     "searchField": "",
                     "minSearch": 0,
-                    "filter": "journal={{data.journal.id}}&publisher={{data.publisher.id}}",
+                    "filter": "",
                     "limit": 100,
                     "redrawOn": "",
                     "input": true,
@@ -1674,7 +1672,7 @@
                         "include": "score",
                         "threshold": 0.3
                     },
-                    "id": "ex0rh5d",
+                    "id": "edwxynf",
                     "defaultValue": {},
                     "selectValues": "",
                     "sort": ""

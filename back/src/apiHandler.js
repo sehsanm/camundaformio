@@ -2,7 +2,7 @@
 const fs = require('fs') ; 
 const { Client, logger } = require("./camsdk");
 const formioUtil = require("./formioUtils") ; 
-const FORMS_DIR = process.env.FORMS_DIR ; 
+const PROCESSES_DIR = process.env.PROCESSES_DIR ; 
 const CAMUNDA_SERVER =  process.env.CAMUNDA_SERVER ; 
 const SERVER_BASE_URL =  process.env.SERVER_BASE_URL ; 
 let  camClient = new Client({
@@ -13,32 +13,32 @@ let  camClient = new Client({
 let  taskService = new camClient.resource('task');
 let  processDefinitionService = new camClient.resource('process-definition');
 
+
+
+module.exports.listProcesses = function(req, res){
+
+  fs.promises.readdir(PROCESSES_DIR).then(folders => {
+    return folders.map((f) => {
+      return {process: f} 
+    }) ;    
+  }).then((ret) => res.send(ret))
+
+}
  
-module.exports.listForms = function (req, res) {
-    ret = [] ; 
-    fs.promises.readdir(FORMS_DIR).then(folders => {
+module.exports.processDetails = function (req, res) {
+    fs.promises.readdir(PROCESSES_DIR + '/' + req.params.processName + '/forms').then(folders => {
         promises = [] ;
-        folders.forEach(folder => {
-            var p = fs.promises.readdir(FORMS_DIR + '/' + folder )
-            promises.push(p.then(files =>  files.forEach(file => ret.push({folder: folder , file: file})) )) ; 
+        return folders.map(f => {
+          return {folder: '/' +  PROCESSES_DIR + '/' + req.params.processName + '/forms' , file: f } 
         });
-        return Promise.all(promises) ; 
-    }).then(()=> res.send(ret.sort((a,b) => {
-      var av = a.folder + a.file ; 
-      var bv = a.folder + a.file ; 
-      if (av > bv)
-        return 1 ; 
-      if (bv > av)
-        return -1 ; 
-      return 0 ;
-    })) );  
+    }).then((ret) => res.send({forms: ret}) );  
 }
 
 module.exports.updateForm = function (req, res) {
-    fs.promises.writeFile(FORMS_DIR +'/' + req.params.folderName + '/' + req.params.formName, JSON.stringify(req.body, null , 4))
+    fs.promises.writeFile(PROCESSES_DIR +'/' + req.params.processName + '/forms/' + req.params.formName, JSON.stringify(req.body, null , 4))
     .then(()=> {
-        console.log('File Updated:' , FORMS_DIR +'/' + req.params.folderName + '/' + req.params.formName)
-        res.send({file: req.params.formName , folder : req.params.folderName})
+        console.log('File Updated:' , PROCESSES_DIR +'/' + req.params.processName + '/forms/' + req.params.formName);
+        res.send({file: req.params.formName , folder : PROCESSES_DIR +'/' + req.params.processName + '/forms/'});
     }) ;     
 }
 
@@ -49,9 +49,7 @@ module.exports.submitForm = function (req, res) {
     data.id = req.params.taskId ; 
     data.variables = formioUtil.convertForm( req.body.data) ; 
     console.log('Submitting form:' , data); 
-    taskService.submitForm(data , () => {
-
-    } ) ; 
+    taskService.submitForm(data , () => {} ) ; 
     res.send("Task Updated!");
 }
 

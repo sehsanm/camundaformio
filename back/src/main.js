@@ -2,10 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const multipartyMiddleware = (require('connect-multiparty'))({ uploadDir: './tmp' }); 
 
-const { listForms, updateForm , submitForm , startProcess, uploadFile} = require('./apiHandler')
+const {listProcesses, processDetails, updateForm , submitForm , startProcess, uploadFile} = require('./apiHandler')
 const PORT = process.env.PORT || 5000
 const FRONT_DIR = process.env.FRONT_DIR 
-const FORMS_DIR = process.env.FORMS_DIR ; 
+const PROCESSES_DIR = process.env.PROCESSES_DIR ; 
 
 
 
@@ -17,9 +17,10 @@ express()
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   })
-  .use('/forms', express.static(FORMS_DIR))
-  .get('/api/forms', listForms)
-  .post('/api/forms/:folderName/:formName', updateForm)
+  .use('/processes', express.static(PROCESSES_DIR))
+  .get('/api/processes' , listProcesses)
+  .get('/api/processes/:processName', processDetails)
+  .post('/api/processes/:processName/forms/:formName', updateForm)
   .post('/api/task/:taskId' , submitForm)
   .post('/api/process/:processDefinitionKey' , startProcess)
   .post('/api/upload', multipartyMiddleware, uploadFile )

@@ -79,7 +79,7 @@ response ;</camunda:script>
       <bpmn:outgoing>Flow_1v7nv67</bpmn:outgoing>
       <bpmn:outgoing>Flow_00ul9kt</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:userTask id="UploadAcceptance" name="Upload Acceptance Letter" camunda:formKey="http://localhosto:3000/processes/apc/forms/UploadAcceptance.json" camunda:assignee="${starter}">
+    <bpmn:userTask id="UploadAcceptance" name="Upload Acceptance Letter" camunda:assignee="${starter}">
       <bpmn:extensionElements>
         <camunda:properties>
           <camunda:property />
@@ -231,7 +231,7 @@ headers</camunda:script>
       <bpmn:incoming>Flow_1v7nv67</bpmn:incoming>
       <bpmn:outgoing>Flow_0upvj9t</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:startEvent id="Event_1u6dhdt" name="Start" camunda:formKey="http://localhost:3000/processes/apc/forms/Start.json" camunda:initiator="starter">
+    <bpmn:startEvent id="Event_1u6dhdt" name="Start" camunda:formKey="http://localhost:3000/forms/apc/Start.json" camunda:initiator="starter">
       <bpmn:outgoing>Flow_1gxdq84</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:serviceTask id="CreateFundApplication" name="Create Fund Application">
@@ -317,7 +317,7 @@ response ;</camunda:script>
     <bpmn:sequenceFlow id="Flow_0e4shca" name="Reject" sourceRef="Gateway_1m3ypqa" targetRef="Activity_1hh27qu">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${preApprovalDecision == 'reject'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:userTask id="ProcessPayment" name="Process Payment" camunda:formKey="http://localhosto:3000/processes/apc/forms/ProcessPayment.json" camunda:candidateGroups="${&#34;FundFinanceManager_&#34; + selectedPolicy.fundId}">
+    <bpmn:userTask id="ProcessPayment" name="Process Payment" camunda:formKey="http://localhost:3000/forms/apc/ProcessPayment.json" camunda:candidateGroups="${&#34;FundFinanceManager_&#34; + selectedPolicy.fundId}">
       <bpmn:incoming>Flow_1b9lamc</bpmn:incoming>
       <bpmn:outgoing>Flow_1ypuxnb</bpmn:outgoing>
     </bpmn:userTask>
@@ -357,11 +357,11 @@ response ;</camunda:script>
       <bpmn:incoming>Flow_1ypuxnb</bpmn:incoming>
       <bpmn:outgoing>Flow_0tkdifu</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:userTask id="Activity_17aen8v" name="Approve Invoice" camunda:formKey="http://localhosto:3000/processes/apc/forms/InvoiceApprove.json" camunda:candidateGroups="${&#34;FundManager_&#34; + selectedPolicy.fundId}">
+    <bpmn:userTask id="Activity_17aen8v" name="Approve Invoice" camunda:formKey="http://localhost:3000/forms/apc/InvoiceApprove.json" camunda:candidateGroups="${&#34;FundManager_&#34; + selectedPolicy.fundId}">
       <bpmn:incoming>Flow_1a4bngn</bpmn:incoming>
       <bpmn:outgoing>Flow_103sia2</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_1p042h4" name="Upload Journal Invoice" camunda:formKey="http://localhosto:3000/processes/apc/forms/UploadJournalInvoice.json" camunda:assignee="${starter}">
+    <bpmn:userTask id="Activity_1p042h4" name="Upload Journal Invoice" camunda:formKey="http://localhost:3000/forms/apc/UploadJournalInvoice.json" camunda:assignee="${starter}">
       <bpmn:incoming>Flow_1w4zt27</bpmn:incoming>
       <bpmn:incoming>Flow_1y0jojh</bpmn:incoming>
       <bpmn:outgoing>Flow_1a4bngn</bpmn:outgoing>
@@ -441,7 +441,7 @@ S(postData, org.camunda.spin.DataFormats.json()).toString();</camunda:script>
       <bpmn:incoming>Flow_0tkdifu</bpmn:incoming>
       <bpmn:outgoing>Flow_1ctw91h</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:userTask id="VoucherApprove" name="Approve Voucher" camunda:formKey="http://localhosto:3000/processes/apc/forms/ApproveVoucher.json" camunda:candidateGroups="${&#34;FundManager_&#34; + selectedPolicy.fundId}">
+    <bpmn:userTask id="VoucherApprove" name="Approve Voucher" camunda:formKey="http://localhost:3000/forms/apc/ApproveVoucher.json" camunda:candidateGroups="${&#34;FundManager_&#34; + selectedPolicy.fundId}">
       <bpmn:incoming>Flow_078ltmx</bpmn:incoming>
       <bpmn:outgoing>Flow_1tk54p2</bpmn:outgoing>
     </bpmn:userTask>
@@ -546,7 +546,7 @@ response ;</camunda:script>
       <bpmn:incoming>Flow_1b8ib5x</bpmn:incoming>
       <bpmn:incoming>Flow_00oi62a</bpmn:incoming>
     </bpmn:serviceTask>
-    <bpmn:userTask id="InvoicePreApprove" name="Pre Approve Invoice Payment" camunda:formKey="http://localhosto:3000/processes/apc/forms/InvoicePreApprove.json" camunda:candidateGroups="${&#34;FundManager_&#34; + selectedPolicy.fundId}">
+    <bpmn:userTask id="InvoicePreApprove" name="Pre Approve Invoice Payment" camunda:formKey="http://localhost:3000/forms/apc/InvoicePreApprove.json" camunda:candidateGroups="${&#34;FundManager_&#34; + selectedPolicy.fundId}">
       <bpmn:incoming>Flow_1j03gwi</bpmn:incoming>
       <bpmn:outgoing>Flow_1t6j7c7</bpmn:outgoing>
     </bpmn:userTask>

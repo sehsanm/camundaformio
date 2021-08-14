@@ -1,15 +1,18 @@
 import axios from "axios" 
 
 
-export default {
-    getForms : () => {
-        return axios.get(process.env.REACT_APP_BACKEND_URL + '/api/forms')        
+let exp =  {
+    getProcesses : () => {
+        return axios.get(process.env.REACT_APP_BACKEND_URL + '/api/processes')        
     }, 
-    getForm : (formName) => {
-        return axios.get(process.env.REACT_APP_BACKEND_URL + '/forms/' + formName)        
+    getProcessDetails : (processName) => {
+        return axios.get(process.env.REACT_APP_BACKEND_URL + '/api/processes/' + processName)        
     }, 
-    updateForm : (formName , form) => {
-        return axios.post(process.env.REACT_APP_BACKEND_URL + '/api/forms/' + formName , form , {headers: {'Content-Type' : "application/json"}})        
+    getForm : (processName , formName) => {
+        return axios.get(process.env.REACT_APP_BACKEND_URL + '/processes/' + processName + '/forms/'  + formName)        
+    }, 
+    updateForm : (processName, formName , form) => {
+        return axios.post(process.env.REACT_APP_BACKEND_URL + '/api/processes/' + processName + '/forms/' + formName , form , {headers: {'Content-Type' : "application/json"}})        
     }, 
 
     submitForm : ( taskId , data) => {
@@ -20,3 +23,5 @@ export default {
         return axios.post(process.env.REACT_APP_BACKEND_URL + '/api/process/' + processKey , data , {headers: {'Content-Type' : "application/json"}})        
     }, 
 }
+
+export default exp ; 

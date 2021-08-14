@@ -8,12 +8,12 @@ function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
 function FormSubmit() {
-    const {folderName, formName} = useParams();
+    const {processName, formName} = useParams();
     let query = useQuery();
 
     const [form , setForm] = useState([]) ; 
     useEffect(() => {
-        ApiManager.getForm(folderName + '/' + formName ).then(form => setForm(form.data)) ;
+        ApiManager.getForm(processName , formName ).then(form => setForm(form.data)) ;
     }, []) ; 
     const submitData = (data) => {
         console.log('Test!' , data) ; 

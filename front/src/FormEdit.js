@@ -7,9 +7,9 @@ import ApiManager from './ApiManager' ;
 
 function FormEdit() {
     const [form , setForm] = useState([]) ; 
-    const { formName , folderName } = useParams();
+    const { processName , formName } = useParams();
     useEffect(() => {
-        ApiManager.getForm(folderName + '/' + formName).then(form => {
+        ApiManager.getForm(processName, formName).then(form => {
             let finalForm = form.data
             if (finalForm.components == undefined) {
                 //A bug in form Editor 
@@ -21,7 +21,7 @@ function FormEdit() {
     }, []) ; 
 
     const submitForm = (e) => {
-        ApiManager.updateForm(folderName + '/' + formName , form).catch(alert) ; 
+        ApiManager.updateForm(processName, formName, form).catch(alert) ; 
         e.preventDefault() ; 
     }
 

@@ -5,23 +5,28 @@ import {
   Route,
 } from "react-router-dom";
 import Navbar from "./Navbar" ; 
-import FormList from "./FormList" ; 
+import ProcessList from "./ProcessList" ; 
 import FormEdit from "./FormEdit" ; 
 import FormSubmit from './FormSubmit';
+import ProcessDetails from './ProcessDetails';
 
 function App() {
   return (
     <Router> 
         <Navbar />
         <Switch>
-        <Route path="/forms/:folderName/:formName/edit">
+        <Route path="/processes/:processName/forms/:formName/edit">
             <FormEdit />
         </Route>
-        <Route path="/forms/:folderName/:formName">
+        <Route path="/processes/:processName/forms/:formName">
             <FormSubmit />
         </Route>
+
+        <Route path="/processes/:processName">
+            <ProcessDetails />
+        </Route>
         <Route path="/">
-            <FormList />
+            <ProcessList />
         </Route>
 
         </Switch>

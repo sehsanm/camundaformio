@@ -12,7 +12,6 @@
       </bpmn:lane>
       <bpmn:lane id="Lane_0j48sxm" name="Fund Admin">
         <bpmn:flowNodeRef>Event_1vazn45</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>InvoicePreApprove</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_0535xvu</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_1m3ypqa</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_06g7sy7</bpmn:flowNodeRef>
@@ -22,6 +21,7 @@
         <bpmn:flowNodeRef>Activity_0qcojo8</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>CheckAdminResponse</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>VoucherApprove</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>InvoicePreApprove</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_08jaq41" name="Researcher">
         <bpmn:flowNodeRef>ReserveVoucher</bpmn:flowNodeRef>
@@ -89,10 +89,6 @@ response ;</camunda:script>
       <bpmn:incoming>Flow_1l9h4zs</bpmn:incoming>
       <bpmn:outgoing>Flow_078ltmx</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="InvoicePreApprove" name="Pre Approve Invoice Payment" camunda:formKey="http://localhost:3000/forms/apc/InvoicePreApprove.json" camunda:candidateGroups="${&#34;FundManager_&#34; + selectedPolicy.fundId}">
-      <bpmn:incoming>Flow_1j03gwi</bpmn:incoming>
-      <bpmn:outgoing>Flow_1t6j7c7</bpmn:outgoing>
-    </bpmn:userTask>
     <bpmn:exclusiveGateway id="Gateway_0535xvu" name="Check Invoice Approval">
       <bpmn:incoming>Flow_103sia2</bpmn:incoming>
       <bpmn:outgoing>Flow_1w4zt27</bpmn:outgoing>
@@ -117,7 +113,7 @@ response ;</camunda:script>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="Flow_0upn6zh" sourceRef="Event_0h0bt2v" targetRef="Activity_1fehoyf" />
-    <bpmn:sequenceFlow id="Flow_0r16lfo" sourceRef="Gateway_1m3ypqa" targetRef="Activity_0qcojo8">
+    <bpmn:sequenceFlow id="Flow_0r16lfo" name="Approve" sourceRef="Gateway_1m3ypqa" targetRef="Activity_0qcojo8">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${preApprovalDecision == 'approve'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1t6j7c7" sourceRef="InvoicePreApprove" targetRef="Gateway_1m3ypqa" />
@@ -550,6 +546,10 @@ response ;</camunda:script>
       <bpmn:incoming>Flow_1b8ib5x</bpmn:incoming>
       <bpmn:incoming>Flow_00oi62a</bpmn:incoming>
     </bpmn:serviceTask>
+    <bpmn:userTask id="InvoicePreApprove" name="Pre Approve Invoice Payment" camunda:formKey="http://localhost:3000/forms/apc/InvoicePreApprove.json" camunda:candidateGroups="${&#34;FundManager_&#34; + selectedPolicy.fundId}">
+      <bpmn:incoming>Flow_1j03gwi</bpmn:incoming>
+      <bpmn:outgoing>Flow_1t6j7c7</bpmn:outgoing>
+    </bpmn:userTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_13s69cp">
@@ -720,19 +720,23 @@ response ;</camunda:script>
       <bpmndi:BPMNEdge id="Flow_1j03gwi_di" bpmnElement="Flow_1j03gwi">
         <di:waypoint x="430" y="190" />
         <di:waypoint x="430" y="555" />
-        <di:waypoint x="390" y="555" />
+        <di:waypoint x="310" y="555" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="428" y="370" width="35" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1t6j7c7_di" bpmnElement="Flow_1t6j7c7">
-        <di:waypoint x="340" y="595" />
+        <di:waypoint x="310" y="555" />
+        <di:waypoint x="340" y="555" />
         <di:waypoint x="340" y="630" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0r16lfo_di" bpmnElement="Flow_0r16lfo">
-        <di:waypoint x="340" y="630" />
-        <di:waypoint x="340" y="575" />
-        <di:waypoint x="460" y="575" />
+        <di:waypoint x="365" y="655" />
+        <di:waypoint x="510" y="655" />
+        <di:waypoint x="510" y="595" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="418" y="637" width="41" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0upn6zh_di" bpmnElement="Flow_0upn6zh">
         <di:waypoint x="698" y="390" />
@@ -752,9 +756,6 @@ response ;</camunda:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_06xg2r3_di" bpmnElement="UploadAcceptance">
         <dc:Bounds x="760" y="125" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_17v42v2_di" bpmnElement="InvoicePreApprove">
-        <dc:Bounds x="290" y="515" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0535xvu_di" bpmnElement="Gateway_0535xvu" isMarkerVisible="true">
         <dc:Bounds x="735" y="640" width="50" height="50" />
@@ -827,6 +828,9 @@ response ;</camunda:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1y8melg_di" bpmnElement="NotifyUploadDocumentReminder">
         <dc:Bounds x="840" y="280" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_17v42v2_di" bpmnElement="InvoicePreApprove">
+        <dc:Bounds x="210" y="515" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0h0bt2v_di" bpmnElement="Event_0h0bt2v">
         <dc:Bounds x="662" y="372" width="36" height="36" />

@@ -1582,7 +1582,7 @@
                         ],
                         "resource": "",
                         "json": "",
-                        "url": "{{form.variables.workflowServiceAddress}}/policies/{{data.journal._id}}",
+                        "url": "{{form.variables.workflowServiceAddress}}/policies?journalId={{data.journal.id}}",
                         "headers": [
                             {
                                 "key": "",
@@ -1594,7 +1594,7 @@
                     "dataType": "",
                     "idPath": "id",
                     "valueProperty": "",
-                    "template": "<span>{{ item.policyTitle}} - {{ item.fundTitle}}</span>",
+                    "template": "<span>{{ item.title}} - {{ item.fundTitle}} ( {{item.type}})</span>",
                     "refreshOn": "journal",
                     "refreshOnBlur": "",
                     "clearOnRefresh": true,
@@ -1650,6 +1650,7 @@
                     "indexeddb": {
                         "filter": {}
                     },
+                    "selectValues": "policies",
                     "selectFields": "",
                     "searchField": "",
                     "minSearch": 0,
@@ -1672,9 +1673,8 @@
                         "include": "score",
                         "threshold": 0.3
                     },
-                    "id": "edwxynf",
+                    "id": "ex9qhdo",
                     "defaultValue": {},
-                    "selectValues": "",
                     "sort": ""
                 },
                 {
@@ -1687,7 +1687,7 @@
                             "value": ""
                         }
                     ],
-                    "content": "<h2>Fund Notes: </h2>\n<h3>{{data.selectedPolicy.fundTitle}} - {{data.selectedPolicy.policyTitle}}</h3>\n<p>{{data.selectedPolicy.notes}}</p>\n<p></p>",
+                    "content": "<h2>Fund Notes: </h2>\n<h3>{{data.selectedPolicy.fundTitle}} - {{data.selectedPolicy.title}}</h3>\n<p>{{data.selectedPolicy.note}} - {{data.selectedPolicy.terms}}</p>\n<p>Support Type: {{data.selectedPolicy.type}}</p>",
                     "refreshOnChange": true,
                     "customClass": "",
                     "hidden": false,
@@ -1754,7 +1754,7 @@
                     "showCharCount": false,
                     "showWordCount": false,
                     "allowMultipleMasks": false,
-                    "id": "erlnjgd"
+                    "id": "ezrt57"
                 }
             ],
             "placeholder": "",

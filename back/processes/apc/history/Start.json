@@ -1,0 +1,116 @@
+[
+    {
+        "affiliation": {
+            "id": "6113bc5bc9fa6d00063b42d0",
+            "title": "Ain Shams University",
+            "description": null,
+            "url": "https://www.asu.edu.eg/",
+            "email": null,
+            "type": "Institute"
+        },
+        "orcid": "34235445",
+        "publisher": {
+            "id": "609fc4f918232d000658284c",
+            "title": "Elsevier"
+        },
+        "journal": {
+            "id": "609fc63a18232d0006584a7b",
+            "title": "Journal of Innovation & Knowledge"
+        },
+        "articleTitle": "Test`1",
+        "articlePdfFile": [
+            {
+                "storage": "url",
+                "name": "article-eaf120b4-a6b3-47cf-a19e-bb22a9e5ddaf.pdf",
+                "url": "http://localhost:8080/tmp/article.pdf",
+                "size": 1483129,
+                "type": "application/pdf",
+                "data": {
+                    "url": "http://localhost:8080/tmp/article.pdf",
+                    "name": "article.pdf",
+                    "size": 1483129,
+                    "baseUrl": "https://api.form.io",
+                    "project": "",
+                    "form": ""
+                },
+                "originalName": "article.pdf"
+            }
+        ],
+        "mainSubject": {
+            "id": "60fbbcac0023940006e0da00",
+            "title": "Art and Architecture"
+        },
+        "subject1": {
+            "id": "60fbbcac0023940006e0d9e4",
+            "title": "ARCHITECTURE"
+        },
+        "currency": "usd",
+        "selectedPolicy": {
+            "id": "e6bf0c9e-1f79-45fe-be14-c96bab6f3652",
+            "type": "VOUCHER",
+            "title": "Voucher Policy on Elsevier (Publisher) by STDF (Fund)",
+            "fundId": "610f0e3f0023940006e0dc9b",
+            "terms": "Up to 1000$",
+            "isActive": true,
+            "note": "This is a policy on Elsevier journals",
+            "createdBy": "sehsanmgmailcom",
+            "createdAt": "2021-08-14T08:06:28.857Z",
+            "publisherId": "609fc4f918232d000658284c"
+        },
+        "submit": true,
+        "publishPrice": 120
+    },
+    {
+        "affiliation": {
+            "id": "6113b69adfa05e0006f0a975",
+            "title": "Cairo University",
+            "description": null,
+            "url": "https://cu.edu.eg",
+            "email": null,
+            "type": "Institute"
+        },
+        "orcid": "23423442",
+        "publisher": {
+            "id": "609fc4f918232d000658284c",
+            "title": "Elsevier"
+        },
+        "journal": {
+            "id": "609fc63a18232d0006584a7b",
+            "title": "Journal of Innovation & Knowledge"
+        },
+        "articleTitle": "Test5",
+        "articlePdfFile": [
+            {
+                "storage": "base64",
+                "name": "empty-fbc404bb-6a71-4f82-909b-772c9176bd46.pdf",
+                "url": "data:application/pdf;base64,MTIzNA==",
+                "size": 4,
+                "type": "application/pdf",
+                "originalName": "empty.pdf"
+            }
+        ],
+        "mainSubject": {
+            "id": "60fbbcac0023940006e0d9e0",
+            "title": "General and Reference Works"
+        },
+        "subject1": {
+            "id": "60fbbcac0023940006e0d9d6",
+            "title": "References"
+        },
+        "currency": "usd",
+        "selectedPolicy": {
+            "id": "e6bf0c9e-1f79-45fe-be14-c96bab6f3652",
+            "type": "VOUCHER",
+            "title": "Voucher Policy on Elsevier (Publisher) by STDF (Fund)",
+            "fundId": "610f0e3f0023940006e0dc9b",
+            "terms": "Up to 1000$",
+            "isActive": true,
+            "note": "This is a policy on Elsevier journals",
+            "createdBy": "sehsanmgmailcom",
+            "createdAt": "2021-08-14T08:06:28.857Z",
+            "publisherId": "609fc4f918232d000658284c"
+        },
+        "submit": true,
+        "publishPrice": 100
+    }
+]

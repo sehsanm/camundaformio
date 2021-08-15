@@ -2,6 +2,7 @@
 const fs = require('fs') ; 
 const { Client, logger } = require("./camsdk");
 const formioUtil = require("./formioUtils") ; 
+const historyService = require("./historyService"); 
 const PROCESSES_DIR = process.env.PROCESSES_DIR ; 
 const CAMUNDA_SERVER =  process.env.CAMUNDA_SERVER ; 
 const SERVER_BASE_URL =  process.env.SERVER_BASE_URL ; 
@@ -34,6 +35,19 @@ module.exports.processDetails = function (req, res) {
     }).then((ret) => res.send({forms: ret}) );  
 }
 
+module.exports.saveHistory = function(req, res) {
+  historyService.saveHistory(req.params.processName).then(() => res.send("Saved!")) ;  
+}
+
+module.exports.loadHistory = function(req, res) {
+  historyService.loadHistory(req.params.processName).then(() => res.send("Loaded!")) ;  
+}
+
+module.exports.getHistory= function(req, res) {
+  res.send(historyService.getHistory(req.params.processName, req.params.formName)) ;  
+}
+
+
 module.exports.updateForm = function (req, res) {
     fs.promises.writeFile(PROCESSES_DIR +'/' + req.params.processName + '/forms/' + req.params.formName, JSON.stringify(req.body, null , 4))
     .then(()=> {
@@ -44,11 +58,15 @@ module.exports.updateForm = function (req, res) {
 
 
 
+
 module.exports.submitForm = function (req, res) {
     var data = {} ; 
     data.id = req.params.taskId ; 
     data.variables = formioUtil.convertForm( req.body.data) ; 
     console.log('Submitting form:' , data); 
+    if (req.query.addToHistory == 'true') {
+      historyService.addHistory(req.params.processName, req.params.formName ,  req.body.data) ; 
+    }
     taskService.submitForm(data , () => {} ) ; 
     res.send("Task Updated!");
 }
@@ -57,8 +75,15 @@ module.exports.startProcess = function (req, res) {
     var data = {} ; 
     data.key = req.params.processDefinitionKey ; 
     data.variables = formioUtil.convertForm( req.body.data) ; 
+    console.log('Body Data:' , req.body.data) ;
     console.log('Submitting form:' , data); 
+    console.log('Addto History ---> ' ,req.query.addToHistory   ) ; 
+    if (req.query.addToHistory == 'true') {
+      historyService.addHistory(req.params.processName, req.params.formName ,  req.body.data) ; 
+    }
     processDefinitionService.submitForm(data , console.log) ; 
+
+    
     res.send("Process Created");
 
 }

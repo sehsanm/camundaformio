@@ -27,7 +27,6 @@
             "tableView": true,
             "modalEdit": false,
             "multiple": false,
-            "defaultValue": null,
             "persistent": true,
             "inputFormat": "plain",
             "protected": false,
@@ -81,7 +80,8 @@
             "refreshOn": "",
             "dataGridLabel": false,
             "inputType": "text",
-            "id": "eb13uo"
+            "id": "er7euf4",
+            "defaultValue": null
         },
         {
             "type": "button",
@@ -154,7 +154,7 @@
             "allowMultipleMasks": false,
             "leftIcon": "",
             "rightIcon": "",
-            "id": "e9npqu"
+            "id": "e2aeu9"
         }
     ]
 }

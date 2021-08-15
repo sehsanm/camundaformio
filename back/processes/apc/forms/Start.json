@@ -621,11 +621,11 @@
                                     "dataType": "",
                                     "idPath": "id",
                                     "valueProperty": "",
-                                    "template": "<span>{{ item.title }} ({{ item.printISSN }} - {{ item.onlineISSN }})</span>",
+                                    "template": "<span>{{ item.title }}</span>",
                                     "refreshOn": "publisher",
                                     "refreshOnBlur": "publisher",
-                                    "clearOnRefresh": true,
-                                    "searchEnabled": false,
+                                    "clearOnRefresh": false,
+                                    "searchEnabled": true,
                                     "selectThreshold": 0.3,
                                     "readOnlyValue": false,
                                     "customOptions": {},
@@ -641,7 +641,7 @@
                                     "allowCalculateOverride": false,
                                     "validateOn": "change",
                                     "validate": {
-                                        "required": true,
+                                        "required": false,
                                         "onlyAvailableItems": false,
                                         "customMessage": "",
                                         "custom": "",
@@ -700,8 +700,10 @@
                                         "include": "score",
                                         "threshold": 0.3
                                     },
-                                    "id": "ebxu96k",
-                                    "defaultValue": {}
+                                    "id": "ec4wg7",
+                                    "defaultValue": {},
+                                    "selectValues": "",
+                                    "sort": ""
                                 }
                             ],
                             "width": 6,
@@ -938,7 +940,7 @@
                     "disabled": false,
                     "tableView": false,
                     "modalEdit": false,
-                    "storage": "url",
+                    "storage": "base64",
                     "dir": "",
                     "fileNameTemplate": "",
                     "image": false,
@@ -951,8 +953,8 @@
                         }
                     ],
                     "filePattern": "*",
-                    "fileMinSize": "100KB",
-                    "fileMaxSize": "5MB",
+                    "fileMinSize": "1B",
+                    "fileMaxSize": "10MB",
                     "multiple": false,
                     "persistent": true,
                     "protected": false,
@@ -1010,11 +1012,8 @@
                     "showCharCount": false,
                     "showWordCount": false,
                     "allowMultipleMasks": false,
-                    "privateDownload": false,
-                    "id": "e7931fs",
-                    "url": "http://localhost:5000/api/upload",
-                    "options": "",
-                    "fileKey": ""
+                    "id": "erb7tn",
+                    "privateDownload": false
                 },
                 {
                     "label": "Subject",

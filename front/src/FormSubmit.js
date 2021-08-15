@@ -12,23 +12,42 @@ function FormSubmit() {
     let query = useQuery();
 
     const [form , setForm] = useState([]) ; 
+    const [history, setHistory] = useState([]); 
     useEffect(() => {
         ApiManager.getForm(processName , formName ).then(form => setForm(form.data)) ;
+        ApiManager.getFormHistory(processName, formName).then(h => {
+            console.log(h.data); 
+            setHistory(h.data);
+        }); 
     }, []) ; 
-    const submitData = (data) => {
+    
+    const submitData = (data , addToHistory = true) => {
+
+        
         console.log('Test!' , data) ; 
+        console.log('AddtoHistory:' , addToHistory);
         if (query.get("taskId")) {
-            ApiManager.submitForm(query.get("taskId") , data).then(() => window.location = query.get("callbackUrl")) ;
+            ApiManager.submitForm(processName, formName , query.get("taskId") , data, addToHistory).then(() => window.location = query.get("callbackUrl")) ;
         } else {
-            ApiManager.startProcess( query.get("processDefinitionKey") , data).then(() => window.location = query.get("callbackUrl")) ;
+            ApiManager.startProcess(processName, formName , query.get("processDefinitionKey") , data , addToHistory).then(() => window.location = query.get("callbackUrl")) ;
 
         }
         
     }
+
+    const submitHistory = (ind) => {
+        var data = history[ind] ; 
+        submitData({data : data}   , false) 
+    }
+
     return (
             <div style={{width: "80%" , textAlign:"center"}} >
-                <Form form={form} onSubmit={submitData} /> 
-
+                <h2>History</h2>
+                {
+                    history.map((h,i) => <span key={i} class="badge bg-primary"  onClick={() => submitHistory(i)}>{i}</span>)
+                }
+                <hr/>
+                <Form form={form} onSubmit={(data) => submitData(data, true)} /> 
             </div>
     );    
 

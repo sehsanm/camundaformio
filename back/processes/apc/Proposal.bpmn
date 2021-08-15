@@ -46,17 +46,20 @@
         <camunda:connector>
           <camunda:inputOutput>
             <camunda:inputParameter name="headers">
-              <camunda:script scriptFormat="groovy">def headers = [:] ; 
-headers.Authorization = System.getenv("APC_APP_API_TOKEN") ;
+              <camunda:script scriptFormat="groovy">def headers = [:] 
+headers.Authorization = System.getenv("APC_APP_API_TOKEN") 
+headers['Content-Type'] = 'application/json'
+
 headers</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="url">
-              <camunda:script scriptFormat="groovy">System.getenv("APC_APP_BACKEND") + "/workflow/vouchers/reserve?policyId=" + selectedPolicy.id</camunda:script>
+              <camunda:script scriptFormat="groovy">System.getenv("APC_APP_BACKEND") + "/workflow/vouchers/reserve?fundApplicationId=" + fundApplicationId</camunda:script>
             </camunda:inputParameter>
-            <camunda:inputParameter name="method">post</camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
             <camunda:outputParameter name="reservedVoucher">
               <camunda:script scriptFormat="groovy">if (statusCode != 200) {
-  throw new Exception(response.toString())
+  println 'Bad statusCode received:' + statusCode ; 
+  throw new Exception('Failed to Reserve Voucher:' + response) ;
 }
 print response ; 
 response ;</camunda:script>
@@ -79,7 +82,7 @@ response ;</camunda:script>
       <bpmn:outgoing>Flow_1v7nv67</bpmn:outgoing>
       <bpmn:outgoing>Flow_00ul9kt</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:userTask id="UploadAcceptance" name="Upload Acceptance Letter" camunda:assignee="${starter}">
+    <bpmn:userTask id="UploadAcceptance" name="Upload Acceptance Letter" camunda:formKey="http://localhosto:3000/processes/apc/forms/UploadAcceptance.json" camunda:assignee="${starter}">
       <bpmn:extensionElements>
         <camunda:properties>
           <camunda:property />
@@ -166,14 +169,15 @@ response ;</camunda:script>
         <camunda:connector>
           <camunda:inputOutput>
             <camunda:inputParameter name="headers">
-              <camunda:script scriptFormat="groovy">def headers = [:] ; 
-headers.Authorization = System.getenv("APC_APP_API_TOKEN") ;
-headers</camunda:script>
+              <camunda:script scriptFormat="groovy">def h= [:]
+h['Authorization'] = System.getenv("APC_APP_API_TOKEN") 
+h['Content-Type'] = 'application/json'
+h</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="url">
               <camunda:script scriptFormat="groovy">System.getenv("APC_APP_BACKEND") + "workflow/vouchers/"+ reservedVoucher.id + "/release"</camunda:script>
             </camunda:inputParameter>
-            <camunda:inputParameter name="method">post</camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
         </camunda:connector>
@@ -231,7 +235,7 @@ headers</camunda:script>
       <bpmn:incoming>Flow_1v7nv67</bpmn:incoming>
       <bpmn:outgoing>Flow_0upvj9t</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:startEvent id="Event_1u6dhdt" name="Start" camunda:formKey="http://localhost:3000/forms/apc/Start.json" camunda:initiator="starter">
+    <bpmn:startEvent id="Event_1u6dhdt" name="Start" camunda:formKey="http://localhost:3000/processes/apc/forms/Start.json" camunda:initiator="starter">
       <bpmn:outgoing>Flow_1gxdq84</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:serviceTask id="CreateFundApplication" name="Create Fund Application">
@@ -241,31 +245,35 @@ headers</camunda:script>
             <camunda:inputParameter name="headers">
               <camunda:script scriptFormat="groovy">def headers = [:] ; 
 headers.Authorization = System.getenv("APC_APP_API_TOKEN") ;
+headers['Content-Type'] = 'application/json'
 headers</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="groovy">def postData = [:];
 postData.articleTitle = articleTitle;
-postData.articleFile= articlePdfFile;
-postData.userId = authenticatedUserId ;
+postData.articleFile= articlePdfFile[0];
+postData.userId = starter ; 
 postData.policyId = selectedPolicy.id;
 postData.processInstanceId = execution.getProcessInstanceId() ; 
 postData.fundId = selectedPolicy.fundId
 postData.publisherId = publisher.id
 postData.journalId = journal.id
 postData.affiliationId = affiliation.id
-S(postData, org.camunda.spin.DataFormats.json()).toString();</camunda:script>
+j = S(postData, org.camunda.spin.DataFormats.json()).toString();
+println 'JSON payload:' + j 
+j</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="url">
               <camunda:script scriptFormat="groovy">System.getenv("APC_APP_BACKEND") + "/workflow/fund-applications"</camunda:script>
             </camunda:inputParameter>
-            <camunda:inputParameter name="method">post</camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
             <camunda:outputParameter name="fundApplicationId">
               <camunda:script scriptFormat="groovy">if (statusCode != 200) {
-  throw new Exception(response.toString())
+  println 'Bad statusCode received:' + statusCode ; 
+  throw new Exception('Failed to CreatedFund Application:' + response) ;
 }
 
-response ;</camunda:script>
+response ; </camunda:script>
             </camunda:outputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
@@ -317,7 +325,7 @@ response ;</camunda:script>
     <bpmn:sequenceFlow id="Flow_0e4shca" name="Reject" sourceRef="Gateway_1m3ypqa" targetRef="Activity_1hh27qu">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${preApprovalDecision == 'reject'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:userTask id="ProcessPayment" name="Process Payment" camunda:formKey="http://localhost:3000/forms/apc/ProcessPayment.json" camunda:candidateGroups="${&#34;FundFinanceManager_&#34; + selectedPolicy.fundId}">
+    <bpmn:userTask id="ProcessPayment" name="Process Payment" camunda:formKey="http://localhosto:3000/processes/apc/forms/ProcessPayment.json" camunda:candidateGroups="${&#34;FundFinanceManager_&#34; + selectedPolicy.fundId}">
       <bpmn:incoming>Flow_1b9lamc</bpmn:incoming>
       <bpmn:outgoing>Flow_1ypuxnb</bpmn:outgoing>
     </bpmn:userTask>
@@ -357,11 +365,11 @@ response ;</camunda:script>
       <bpmn:incoming>Flow_1ypuxnb</bpmn:incoming>
       <bpmn:outgoing>Flow_0tkdifu</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:userTask id="Activity_17aen8v" name="Approve Invoice" camunda:formKey="http://localhost:3000/forms/apc/InvoiceApprove.json" camunda:candidateGroups="${&#34;FundManager_&#34; + selectedPolicy.fundId}">
+    <bpmn:userTask id="Activity_17aen8v" name="Approve Invoice" camunda:formKey="http://localhosto:3000/processes/apc/forms/InvoiceApprove.json" camunda:candidateGroups="${&#34;FundManager_&#34; + selectedPolicy.fundId}">
       <bpmn:incoming>Flow_1a4bngn</bpmn:incoming>
       <bpmn:outgoing>Flow_103sia2</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_1p042h4" name="Upload Journal Invoice" camunda:formKey="http://localhost:3000/forms/apc/UploadJournalInvoice.json" camunda:assignee="${starter}">
+    <bpmn:userTask id="Activity_1p042h4" name="Upload Journal Invoice" camunda:formKey="http://localhosto:3000/processes/apc/forms/UploadJournalInvoice.json" camunda:assignee="${starter}">
       <bpmn:incoming>Flow_1w4zt27</bpmn:incoming>
       <bpmn:incoming>Flow_1y0jojh</bpmn:incoming>
       <bpmn:outgoing>Flow_1a4bngn</bpmn:outgoing>
@@ -383,9 +391,10 @@ response ;</camunda:script>
         <camunda:connector>
           <camunda:inputOutput>
             <camunda:inputParameter name="headers">
-              <camunda:script scriptFormat="groovy">def headers = [:] ; 
-headers.Authorization = System.getenv("APC_APP_API_TOKEN") ;
-headers</camunda:script>
+              <camunda:script scriptFormat="groovy">def h= [:]
+h['Authorization'] = System.getenv("APC_APP_API_TOKEN") 
+h['Content-Type'] = 'application/json'
+h</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="groovy">def postData = [:];
@@ -399,7 +408,7 @@ S(postData, org.camunda.spin.DataFormats.json()).toString();</camunda:script>
             <camunda:inputParameter name="url">
               <camunda:script scriptFormat="groovy">System.getenv("APC_APP_BACKEND") + "/voucher/reserve"</camunda:script>
             </camunda:inputParameter>
-            <camunda:inputParameter name="method">post</camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
             <camunda:outputParameter name="reservedBudget">
               <camunda:script scriptFormat="groovy">if (statusCode != 200) {
   throw new Exception(response.toString())
@@ -441,7 +450,7 @@ S(postData, org.camunda.spin.DataFormats.json()).toString();</camunda:script>
       <bpmn:incoming>Flow_0tkdifu</bpmn:incoming>
       <bpmn:outgoing>Flow_1ctw91h</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:userTask id="VoucherApprove" name="Approve Voucher" camunda:formKey="http://localhost:3000/forms/apc/ApproveVoucher.json" camunda:candidateGroups="${&#34;FundManager_&#34; + selectedPolicy.fundId}">
+    <bpmn:userTask id="VoucherApprove" name="Approve Voucher" camunda:formKey="http://localhosto:3000/processes/apc/forms/ApproveVoucher.json" camunda:candidateGroups="${&#39;FundManager_&#39;}${selectedPolicy.fundId.toString()}">
       <bpmn:incoming>Flow_078ltmx</bpmn:incoming>
       <bpmn:outgoing>Flow_1tk54p2</bpmn:outgoing>
     </bpmn:userTask>
@@ -481,9 +490,10 @@ S(postData, org.camunda.spin.DataFormats.json()).toString();</camunda:script>
         <camunda:connector>
           <camunda:inputOutput>
             <camunda:inputParameter name="headers">
-              <camunda:script scriptFormat="groovy">def headers = [:] ; 
-headers.Authorization = System.getenv("APC_APP_API_TOKEN") ;
-headers</camunda:script>
+              <camunda:script scriptFormat="groovy">def h= [:]
+h['Authorization'] = System.getenv("APC_APP_API_TOKEN") 
+h['Content-Type'] = 'application/json'
+h</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="groovy">def postData = [:];
@@ -497,7 +507,7 @@ S(postData, org.camunda.spin.DataFormats.json()).toString();</camunda:script>
             <camunda:inputParameter name="url">
               <camunda:script scriptFormat="groovy">System.getenv("APC_APP_BACKEND") + "/voucher/reserve"</camunda:script>
             </camunda:inputParameter>
-            <camunda:inputParameter name="method">post</camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
             <camunda:outputParameter name="reservedVoucher">
               <camunda:script scriptFormat="groovy">if (statusCode != 200) {
   throw new Exception(response.toString())
@@ -517,9 +527,10 @@ response ;</camunda:script>
         <camunda:connector>
           <camunda:inputOutput>
             <camunda:inputParameter name="headers">
-              <camunda:script scriptFormat="groovy">def headers = [:] ; 
-headers.Authorization = System.getenv("APC_APP_API_TOKEN") ;
-headers</camunda:script>
+              <camunda:script scriptFormat="groovy">def h= [:]
+h['Authorization'] = System.getenv("APC_APP_API_TOKEN") 
+h['Content-Type'] = 'application/json'
+h</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="groovy">def postData = [:];
@@ -531,7 +542,7 @@ S(postData, org.camunda.spin.DataFormats.json()).toString();</camunda:script>
             <camunda:inputParameter name="url">
               <camunda:script scriptFormat="groovy">System.getEnv("APC_APP_BACKEND") + "/messages"</camunda:script>
             </camunda:inputParameter>
-            <camunda:inputParameter name="method">post</camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
             <camunda:outputParameter name="reservedVoucher">
               <camunda:script scriptFormat="groovy">if (statusCode != 200) {
   throw new Exception(response.toString())
@@ -546,7 +557,7 @@ response ;</camunda:script>
       <bpmn:incoming>Flow_1b8ib5x</bpmn:incoming>
       <bpmn:incoming>Flow_00oi62a</bpmn:incoming>
     </bpmn:serviceTask>
-    <bpmn:userTask id="InvoicePreApprove" name="Pre Approve Invoice Payment" camunda:formKey="http://localhost:3000/forms/apc/InvoicePreApprove.json" camunda:candidateGroups="${&#34;FundManager_&#34; + selectedPolicy.fundId}">
+    <bpmn:userTask id="InvoicePreApprove" name="Pre Approve Invoice Payment" camunda:formKey="http://localhosto:3000/processes/apc/forms/InvoicePreApprove.json" camunda:candidateGroups="${&#34;FundManager_&#34; + selectedPolicy.fundId}">
       <bpmn:incoming>Flow_1j03gwi</bpmn:incoming>
       <bpmn:outgoing>Flow_1t6j7c7</bpmn:outgoing>
     </bpmn:userTask>
@@ -719,16 +730,16 @@ response ;</camunda:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1j03gwi_di" bpmnElement="Flow_1j03gwi">
         <di:waypoint x="430" y="190" />
-        <di:waypoint x="430" y="555" />
-        <di:waypoint x="310" y="555" />
+        <di:waypoint x="430" y="550" />
+        <di:waypoint x="310" y="550" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="428" y="370" width="35" height="14" />
+          <dc:Bounds x="428" y="367" width="35" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1t6j7c7_di" bpmnElement="Flow_1t6j7c7">
-        <di:waypoint x="310" y="555" />
-        <di:waypoint x="340" y="555" />
-        <di:waypoint x="340" y="630" />
+        <di:waypoint x="260" y="590" />
+        <di:waypoint x="260" y="655" />
+        <di:waypoint x="315" y="655" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0r16lfo_di" bpmnElement="Flow_0r16lfo">
         <di:waypoint x="365" y="655" />
@@ -766,7 +777,7 @@ response ;</camunda:script>
       <bpmndi:BPMNShape id="Gateway_1m3ypqa_di" bpmnElement="Gateway_1m3ypqa" isMarkerVisible="true">
         <dc:Bounds x="315" y="630" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="218" y="645" width="86" height="27" />
+          <dc:Bounds x="297" y="592.5" width="86" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1f90o54_di" bpmnElement="CheckApplicationType" isMarkerVisible="true">
@@ -830,7 +841,7 @@ response ;</camunda:script>
         <dc:Bounds x="840" y="280" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_17v42v2_di" bpmnElement="InvoicePreApprove">
-        <dc:Bounds x="210" y="515" width="100" height="80" />
+        <dc:Bounds x="210" y="510" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0h0bt2v_di" bpmnElement="Event_0h0bt2v">
         <dc:Bounds x="662" y="372" width="36" height="36" />

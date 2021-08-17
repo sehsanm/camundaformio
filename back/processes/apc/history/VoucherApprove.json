@@ -1,0 +1,17 @@
+[
+    {
+        "voucherApprovalDecision": "requireMoreInformation",
+        "comment": "Please provice More info ",
+        "submit": true
+    },
+    {
+        "voucherApprovalDecision": "return",
+        "comment": "ertertert",
+        "submit": true
+    },
+    {
+        "voucherApprovalDecision": "reject",
+        "comment": "",
+        "submit": true
+    }
+]

@@ -531,7 +531,7 @@
             "disabled": false,
             "tableView": false,
             "modalEdit": false,
-            "storage": "",
+            "storage": "base64",
             "dir": "",
             "fileNameTemplate": "",
             "image": false,
@@ -558,7 +558,7 @@
             "calculateServer": false,
             "allowCalculateOverride": false,
             "validate": {
-                "required": false,
+                "required": true,
                 "customMessage": "",
                 "custom": "",
                 "customPrivate": false,
@@ -604,7 +604,7 @@
             "showWordCount": false,
             "allowMultipleMasks": false,
             "privateDownload": false,
-            "id": "e4ut7d"
+            "id": "e69p4qi"
         }
     ]
 }

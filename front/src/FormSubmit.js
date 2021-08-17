@@ -13,6 +13,7 @@ function FormSubmit() {
 
     const [form , setForm] = useState([]) ; 
     const [history, setHistory] = useState([]); 
+    const [submission , setSubmission] = useState({}) ; 
     useEffect(() => {
         ApiManager.getForm(processName , formName ).then(form => setForm(form.data)) ;
         ApiManager.getFormHistory(processName, formName).then(h => {
@@ -37,7 +38,11 @@ function FormSubmit() {
 
     const submitHistory = (ind) => {
         var data = history[ind] ; 
-        submitData({data : data}   , false) 
+        submitData({data : data}   , false) ; 
+    }
+
+    const submitForm = () => {
+        submitData(submission.data, true) ; 
     }
 
     return (
@@ -47,7 +52,10 @@ function FormSubmit() {
                     history.map((h,i) => <span key={i} class="badge bg-primary"  onClick={() => submitHistory(i)}>{i}</span>)
                 }
                 <hr/>
-                <Form form={form} onSubmit={(data) => submitData(data, true)} /> 
+                <Form form={form}  onChange={setSubmission} /> 
+
+                <button disabled={!submission || !submission.isValid} type="button" class="btn btn-primary"  onClick={submitForm}>Submit</button>
+
             </div>
     );    
 

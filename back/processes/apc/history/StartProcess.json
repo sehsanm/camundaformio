@@ -112,5 +112,111 @@
         },
         "submit": true,
         "publishPrice": 100
+    },
+    {
+        "affiliation": {
+            "id": "6113b721dfa05e0006f0a977",
+            "title": "Al-Azhar University",
+            "description": null,
+            "url": "http://www.azhar.edu.eg/",
+            "email": null,
+            "type": "Institute"
+        },
+        "orcid": "3453454",
+        "publisher": {
+            "id": "609fc4f918232d000658284c",
+            "title": "Elsevier"
+        },
+        "journal": {
+            "id": "609fc63a18232d0006584a7b",
+            "title": "Journal of Innovation & Knowledge"
+        },
+        "articleTitle": "Test123 ",
+        "articlePdfFile": [
+            {
+                "storage": "base64",
+                "name": "empty-d9cfc8d0-0258-49eb-8711-a876b857b7ae.pdf",
+                "url": "data:application/pdf;base64,MTIzNA==",
+                "size": 4,
+                "type": "application/pdf",
+                "originalName": "empty.pdf"
+            }
+        ],
+        "subjectCategory": {
+            "id": "60fbbcac0023940006e0daa2",
+            "title": "Sciences"
+        },
+        "subjectArea": {
+            "id": "60fbbcac0023940006e0da87",
+            "title": "Mathematics"
+        },
+        "currency": "usd",
+        "selectedPolicy": {
+            "id": "4626997d-06be-48e8-9fae-05a97a6a8de0",
+            "type": "INVOICE",
+            "title": "An Invoice Policy on Elsevier journals",
+            "fundId": "610f0e3f0023940006e0dc9b",
+            "terms": "Up to 2000$",
+            "isActive": true,
+            "note": "ut",
+            "createdBy": "sehsanmgmailcom",
+            "createdAt": "2021-08-16T05:00:53.009Z",
+            "publisherId": "609fc4f918232d000658284c"
+        },
+        "submit": true,
+        "publishPrice": 124
+    },
+    {
+        "affiliation": {
+            "id": "6113b69adfa05e0006f0a975",
+            "title": "Cairo University",
+            "description": null,
+            "url": "https://cu.edu.eg",
+            "email": null,
+            "type": "Institute"
+        },
+        "orcid": "22314234",
+        "publisher": {
+            "id": "609fc4f918232d000658284c",
+            "title": "Elsevier"
+        },
+        "journal": {
+            "id": "609fc63a18232d0006584a7b",
+            "title": "Journal of Innovation & Knowledge"
+        },
+        "articleTitle": "Test 6",
+        "articlePdfFile": [
+            {
+                "storage": "base64",
+                "name": "empty-06e6e9de-9b38-4305-8194-bc0af300800a.pdf",
+                "url": "data:application/pdf;base64,MTIzNA==",
+                "size": 4,
+                "type": "application/pdf",
+                "originalName": "empty.pdf"
+            }
+        ],
+        "subjectCategory": {
+            "id": "60fbbcac0023940006e0d9e0",
+            "title": "General and Reference Works"
+        },
+        "subjectArea": {
+            "id": "60fbbcac0023940006e0d9ce",
+            "title": "Information Resources (General)"
+        },
+        "currency": "usd",
+        "selectedPolicy": {
+            "id": "4626997d-06be-48e8-9fae-05a97a6a8de0",
+            "type": "INVOICE",
+            "title": "An Invoice Policy on Elsevier journals",
+            "fundId": "610f0e3f0023940006e0dc9b",
+            "terms": "Up to 2000$",
+            "isActive": true,
+            "note": "ut",
+            "createdBy": "sehsanmgmailcom",
+            "createdAt": "2021-08-16T05:00:53.009Z",
+            "publisherId": "609fc4f918232d000658284c"
+        },
+        "submit": true,
+        "publishPrice": 100
     }
 ]

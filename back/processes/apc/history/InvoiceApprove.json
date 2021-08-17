@@ -1,0 +1,9 @@
+[
+    {
+        "invoiceApprovalDecision": "approve",
+        "finalApprovedCurrency": "USD",
+        "comment": "565656",
+        "submit": true,
+        "finalApprovedBudget": 120
+    }
+]

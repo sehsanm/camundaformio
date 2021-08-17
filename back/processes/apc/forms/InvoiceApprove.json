@@ -28,7 +28,7 @@
                 },
                 {
                     "label": "Require More Information",
-                    "value": "requireMoreInformation",
+                    "value": "ret",
                     "shortcut": ""
                 }
             ],
@@ -481,87 +481,6 @@
             "fixedSize": true,
             "id": "eaf7xkp",
             "defaultValue": ""
-        },
-        {
-            "label": "Submit Decision",
-            "action": "submit",
-            "showValidations": false,
-            "theme": "primary",
-            "size": "md",
-            "block": false,
-            "leftIcon": "",
-            "rightIcon": "",
-            "shortcut": "",
-            "description": "",
-            "tooltip": "",
-            "customClass": "",
-            "tabindex": "",
-            "disableOnInvalid": true,
-            "hidden": false,
-            "autofocus": false,
-            "disabled": false,
-            "tableView": false,
-            "modalEdit": false,
-            "key": "submit",
-            "tags": [],
-            "properties": {},
-            "conditional": {
-                "show": null,
-                "when": null,
-                "eq": "",
-                "json": ""
-            },
-            "customConditional": "",
-            "logic": [],
-            "attributes": {},
-            "overlay": {
-                "style": "",
-                "page": "",
-                "left": "",
-                "top": "",
-                "width": "",
-                "height": ""
-            },
-            "type": "button",
-            "input": true,
-            "placeholder": "",
-            "prefix": "",
-            "suffix": "",
-            "multiple": false,
-            "defaultValue": null,
-            "protected": false,
-            "unique": false,
-            "persistent": false,
-            "clearOnHide": true,
-            "refreshOn": "",
-            "redrawOn": "",
-            "dataGridLabel": true,
-            "labelPosition": "top",
-            "errorLabel": "",
-            "hideLabel": false,
-            "dbIndex": false,
-            "customDefaultValue": "",
-            "calculateValue": "",
-            "calculateServer": false,
-            "widget": {
-                "type": "input"
-            },
-            "validateOn": "change",
-            "validate": {
-                "required": false,
-                "custom": "",
-                "customPrivate": false,
-                "strictDateValidation": false,
-                "multiple": false,
-                "unique": false
-            },
-            "allowCalculateOverride": false,
-            "encrypted": false,
-            "showCharCount": false,
-            "showWordCount": false,
-            "allowMultipleMasks": false,
-            "id": "e6a2nsp",
-            "saveOnEnter": false
         }
     ]
 }

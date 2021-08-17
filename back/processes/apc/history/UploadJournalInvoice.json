@@ -1,0 +1,28 @@
+[
+    {
+        "journalInvoiceFile": [
+            {
+                "storage": "url",
+                "name": "empty-b3057674-0dc1-40eb-b533-2248c4f93f72.pdf",
+                "url": "http://localhost:8080/tmp/empty.pdf",
+                "size": 4,
+                "type": "application/pdf",
+                "data": {
+                    "url": "http://localhost:8080/tmp/empty.pdf",
+                    "name": "empty.pdf",
+                    "size": 4,
+                    "baseUrl": "https://api.form.io",
+                    "project": "",
+                    "form": ""
+                },
+                "originalName": "empty.pdf"
+            }
+        ],
+        "invoiceNumber": "1232323",
+        "invoiceDueDate": "08/23/2021",
+        "invoiceCurrency": "usd",
+        "invoiceNotes": "Please pay it as this!",
+        "submit": true,
+        "totalInvoiceAmount": 120
+    }
+]

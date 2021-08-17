@@ -67,7 +67,7 @@ module.exports.submitForm = function (req, res) {
     if (req.query.addToHistory == 'true') {
       historyService.addHistory(req.params.processName, req.params.formName ,  req.body.data) ; 
     }
-    taskService.submitForm(data , () => {} ) ; 
+    taskService.submitForm(data , console.log) ; 
     res.send("Task Updated!");
 }
 

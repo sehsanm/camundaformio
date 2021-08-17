@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_035kgbk" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.7.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.14.0">
   <bpmn:collaboration id="Collaboration_13s69cp">
-    <bpmn:participant id="Participant_0ezca0x" name="Smart Fund Process" processRef="AtricleProcess" />
+    <bpmn:participant id="Participant_0ezca0x" name="Smart Fund Process" processRef="APCFundRequest" />
   </bpmn:collaboration>
-  <bpmn:process id="AtricleProcess" name="New Version of Article Processing " isExecutable="true">
+  <bpmn:process id="APCFundRequest" name="APC Fund Request" isExecutable="true">
     <bpmn:laneSet id="LaneSet_1rq2gjk">
-      <bpmn:lane id="Lane_1hentpr" name="Fund Financial Manager">
+      <bpmn:lane id="FundFinancialManagerLane" name="Fund Financial Manager">
         <bpmn:flowNodeRef>ProcessPayment</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1y5y5ae</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1czyaia</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CreatePaymentRecord</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>NotifyInvoicePayment</bpmn:flowNodeRef>
       </bpmn:lane>
-      <bpmn:lane id="Lane_0j48sxm" name="Fund Admin">
-        <bpmn:flowNodeRef>Event_1vazn45</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Gateway_0535xvu</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Gateway_1m3ypqa</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_06g7sy7</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1vp2yh4</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1hh27qu</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_17aen8v</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_0qcojo8</bpmn:flowNodeRef>
+      <bpmn:lane id="FundManagerLane" name="Fund Manager">
+        <bpmn:flowNodeRef>CheckInvoiceApproval</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>InvoicePreApproveDecision</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>AllocateVoucher</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>AdminApplicationRejection</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>InvoiceApprove</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ReserveBudget</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>CheckAdminResponse</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>VoucherApprove</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>InvoicePreApprove</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>NotifyVoucherAllocation</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>FundAllocated</bpmn:flowNodeRef>
       </bpmn:lane>
-      <bpmn:lane id="Lane_08jaq41" name="Researcher">
+      <bpmn:lane id="ResearcherLane" name="Researcher">
         <bpmn:flowNodeRef>ReserveVoucher</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>UploadAcceptance</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>CheckApplicationType</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>ReleaseVoucher</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_1u6dhdt</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Start_APCFundRequest</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>CreateFundApplication</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1p042h4</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>UploadJournalInvoice</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>UploadDocumentReminder</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>NoResponseFinal</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_11vdth5</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_0h0bt2v</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_1i0pb2k</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>NoResponseVoucherFinal</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>UploadInvoiceReminder</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>NoResponseInvoiceFinal</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ApplicationRejected</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>AutomaticApplicationRejection</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1fehoyf</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ReleaseBudget</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>NotifyUploadDocumentReminder</bpmn:flowNodeRef>
       </bpmn:lane>
     </bpmn:laneSet>
@@ -46,8 +46,8 @@
         <camunda:connector>
           <camunda:inputOutput>
             <camunda:inputParameter name="headers">
-              <camunda:script scriptFormat="groovy">def headers = [:] 
-headers.Authorization = System.getenv("APC_APP_API_TOKEN") 
+              <camunda:script scriptFormat="groovy">def headers = [:]
+headers.Authorization = System.getenv("APC_APP_API_TOKEN")
 headers['Content-Type'] = 'application/json'
 
 headers</camunda:script>
@@ -58,11 +58,11 @@ headers</camunda:script>
             <camunda:inputParameter name="method">POST</camunda:inputParameter>
             <camunda:outputParameter name="reservedVoucher">
               <camunda:script scriptFormat="groovy">if (statusCode != 200) {
-  println 'Bad statusCode received:' + statusCode ; 
+  println 'Bad statusCode received:' + statusCode ;
   throw new Exception('Failed to Reserve Voucher:' + response) ;
 }
-print response ; 
-response ;</camunda:script>
+print response ;
+S(response,org.camunda.spin.DataFormats.json()).mapTo("java.util.HashMap")  ;</camunda:script>
             </camunda:outputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
@@ -71,18 +71,13 @@ response ;</camunda:script>
       <bpmn:incoming>Flow_0mofyac</bpmn:incoming>
       <bpmn:outgoing>Flow_05vptrd</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:endEvent id="Event_1vazn45">
-      <bpmn:incoming>Flow_1ctw91h</bpmn:incoming>
-      <bpmn:incoming>Flow_0gkdz2l</bpmn:incoming>
-      <bpmn:incoming>Flow_0rdk82g</bpmn:incoming>
-    </bpmn:endEvent>
     <bpmn:exclusiveGateway id="CheckAdminResponse" name="Check Admin Response">
       <bpmn:incoming>Flow_1tk54p2</bpmn:incoming>
       <bpmn:outgoing>Flow_1l9h4zs</bpmn:outgoing>
       <bpmn:outgoing>Flow_1v7nv67</bpmn:outgoing>
       <bpmn:outgoing>Flow_00ul9kt</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:userTask id="UploadAcceptance" name="Upload Acceptance Letter" camunda:formKey="http://localhosto:3000/processes/apc/forms/UploadAcceptance.json" camunda:assignee="${starter}">
+    <bpmn:userTask id="UploadAcceptance" name="Upload Acceptance Letter" camunda:formKey="http://localhost:3000/processes/apc/forms/UploadAcceptance.json" camunda:assignee="${starter}">
       <bpmn:extensionElements>
         <camunda:properties>
           <camunda:property />
@@ -92,18 +87,18 @@ response ;</camunda:script>
       <bpmn:incoming>Flow_1l9h4zs</bpmn:incoming>
       <bpmn:outgoing>Flow_078ltmx</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:exclusiveGateway id="Gateway_0535xvu" name="Check Invoice Approval">
+    <bpmn:exclusiveGateway id="CheckInvoiceApproval" name="Check Invoice Approval">
       <bpmn:incoming>Flow_103sia2</bpmn:incoming>
       <bpmn:outgoing>Flow_1w4zt27</bpmn:outgoing>
       <bpmn:outgoing>Flow_1b9lamc</bpmn:outgoing>
       <bpmn:outgoing>Flow_1846v0b</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:exclusiveGateway id="Gateway_1m3ypqa" name="Invoice Pre Approve Decision">
+    <bpmn:exclusiveGateway id="InvoicePreApproveDecision" name="Invoice Pre Approve Decision">
       <bpmn:incoming>Flow_1t6j7c7</bpmn:incoming>
       <bpmn:outgoing>Flow_0r16lfo</bpmn:outgoing>
       <bpmn:outgoing>Flow_0e4shca</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:boundaryEvent id="NoResponseFinal" name="No Response from Researcher (Voucher) " attachedToRef="UploadAcceptance">
+    <bpmn:boundaryEvent id="NoResponseVoucherFinal" name="No Response from Researcher (Voucher) " attachedToRef="UploadAcceptance">
       <bpmn:outgoing>Flow_0pcavu0</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_1hnt07e">
         <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P60D</bpmn:timeDuration>
@@ -115,46 +110,46 @@ response ;</camunda:script>
         <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P30D</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_0upn6zh" sourceRef="Event_0h0bt2v" targetRef="Activity_1fehoyf" />
-    <bpmn:sequenceFlow id="Flow_0r16lfo" name="Approve" sourceRef="Gateway_1m3ypqa" targetRef="Activity_0qcojo8">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${preApprovalDecision == 'approve'}</bpmn:conditionExpression>
+    <bpmn:sequenceFlow id="Flow_0upn6zh" sourceRef="NoResponseInvoiceFinal" targetRef="ReleaseBudget" />
+    <bpmn:sequenceFlow id="Flow_0r16lfo" name="Approve" sourceRef="InvoicePreApproveDecision" targetRef="ReserveBudget">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${preApprovalDecision== 'approve'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_1t6j7c7" sourceRef="InvoicePreApprove" targetRef="Gateway_1m3ypqa" />
+    <bpmn:sequenceFlow id="Flow_1t6j7c7" sourceRef="InvoicePreApprove" targetRef="InvoicePreApproveDecision" />
     <bpmn:sequenceFlow id="Flow_1j03gwi" name="Invoice" sourceRef="CheckApplicationType" targetRef="InvoicePreApprove">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${selectedPolicy.supportType == 'INVOICE'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${selectedPolicy.type == 'INVOICE'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0gkdz2l" sourceRef="Activity_06g7sy7" targetRef="Event_1vazn45" />
-    <bpmn:sequenceFlow id="Flow_1v7nv67" name="Approve" sourceRef="CheckAdminResponse" targetRef="Activity_1vp2yh4">
+    <bpmn:sequenceFlow id="Flow_0gkdz2l" sourceRef="NotifyVoucherAllocation" targetRef="FundAllocated" />
+    <bpmn:sequenceFlow id="Flow_1v7nv67" name="Approve" sourceRef="CheckAdminResponse" targetRef="AllocateVoucher">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${voucherApprovalDecision == 'approve'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1l9h4zs" name="Return" sourceRef="CheckAdminResponse" targetRef="UploadAcceptance">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${voucherApprovalDecision == 'return' }</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${voucherApprovalDecision == 'ret' }</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1tk54p2" sourceRef="VoucherApprove" targetRef="CheckAdminResponse" />
     <bpmn:sequenceFlow id="Flow_078ltmx" sourceRef="UploadAcceptance" targetRef="VoucherApprove" />
-    <bpmn:sequenceFlow id="Flow_1ctw91h" sourceRef="Activity_1czyaia" targetRef="Event_1vazn45" />
-    <bpmn:sequenceFlow id="Flow_0tkdifu" sourceRef="Activity_1y5y5ae" targetRef="Activity_1czyaia" />
-    <bpmn:sequenceFlow id="Flow_1ypuxnb" sourceRef="ProcessPayment" targetRef="Activity_1y5y5ae" />
-    <bpmn:sequenceFlow id="Flow_1b9lamc" name="Approve" sourceRef="Gateway_0535xvu" targetRef="ProcessPayment">
+    <bpmn:sequenceFlow id="Flow_1ctw91h" sourceRef="NotifyInvoicePayment" targetRef="FundAllocated" />
+    <bpmn:sequenceFlow id="Flow_0tkdifu" sourceRef="CreatePaymentRecord" targetRef="NotifyInvoicePayment" />
+    <bpmn:sequenceFlow id="Flow_1ypuxnb" sourceRef="ProcessPayment" targetRef="CreatePaymentRecord" />
+    <bpmn:sequenceFlow id="Flow_1b9lamc" name="Approve" sourceRef="CheckInvoiceApproval" targetRef="ProcessPayment">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${invoiceApprovalDecision == 'approve'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_1w4zt27" name="Return" sourceRef="Gateway_0535xvu" targetRef="Activity_1p042h4">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${invoiceApprovalDecision == 'return'}</bpmn:conditionExpression>
+    <bpmn:sequenceFlow id="Flow_1w4zt27" name="Return" sourceRef="CheckInvoiceApproval" targetRef="UploadJournalInvoice">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${invoiceApprovalDecision == 'ret'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_103sia2" sourceRef="Activity_17aen8v" targetRef="Gateway_0535xvu" />
-    <bpmn:sequenceFlow id="Flow_1a4bngn" sourceRef="Activity_1p042h4" targetRef="Activity_17aen8v" />
-    <bpmn:sequenceFlow id="Flow_0pcavu0" sourceRef="NoResponseFinal" targetRef="ReleaseVoucher" />
+    <bpmn:sequenceFlow id="Flow_103sia2" sourceRef="InvoiceApprove" targetRef="CheckInvoiceApproval" />
+    <bpmn:sequenceFlow id="Flow_1a4bngn" sourceRef="UploadJournalInvoice" targetRef="InvoiceApprove" />
+    <bpmn:sequenceFlow id="Flow_0pcavu0" sourceRef="NoResponseVoucherFinal" targetRef="ReleaseVoucher" />
     <bpmn:sequenceFlow id="Flow_1b8ib5x" sourceRef="UploadDocumentReminder" targetRef="NotifyUploadDocumentReminder" />
-    <bpmn:sequenceFlow id="Flow_00oi62a" sourceRef="Event_11vdth5" targetRef="NotifyUploadDocumentReminder" />
+    <bpmn:sequenceFlow id="Flow_00oi62a" sourceRef="UploadInvoiceReminder" targetRef="NotifyUploadDocumentReminder" />
     <bpmn:sequenceFlow id="Flow_05vptrd" sourceRef="ReserveVoucher" targetRef="UploadAcceptance" />
     <bpmn:sequenceFlow id="Flow_0mofyac" name="Voucher" sourceRef="CheckApplicationType" targetRef="ReserveVoucher">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${selectedPolicy.type== 'VOUCHER'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_1846v0b" name="Reject" sourceRef="Gateway_0535xvu" targetRef="Activity_1hh27qu">
+    <bpmn:sequenceFlow id="Flow_1846v0b" name="Reject" sourceRef="CheckInvoiceApproval" targetRef="AdminApplicationRejection">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${invoiceApprovalDecision == 'reject' }</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0rdk82g" sourceRef="Activity_1hh27qu" targetRef="Event_1vazn45" />
-    <bpmn:sequenceFlow id="Flow_00ul9kt" name="Reject" sourceRef="CheckAdminResponse" targetRef="Activity_1hh27qu">
+    <bpmn:sequenceFlow id="Flow_0rdk82g" sourceRef="AdminApplicationRejection" targetRef="FundAllocated" />
+    <bpmn:sequenceFlow id="Flow_00ul9kt" name="Reject" sourceRef="CheckAdminResponse" targetRef="AdminApplicationRejection">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${voucherApprovalDecision == 'reject' }</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:exclusiveGateway id="CheckApplicationType" name="Check Application Type">
@@ -162,7 +157,7 @@ response ;</camunda:script>
       <bpmn:outgoing>Flow_0mofyac</bpmn:outgoing>
       <bpmn:outgoing>Flow_1j03gwi</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_1y0jojh" sourceRef="Activity_0qcojo8" targetRef="Activity_1p042h4" />
+    <bpmn:sequenceFlow id="Flow_1y0jojh" sourceRef="ReserveBudget" targetRef="UploadJournalInvoice" />
     <bpmn:sequenceFlow id="Flow_115rlss" sourceRef="ReleaseVoucher" targetRef="AutomaticApplicationRejection" />
     <bpmn:serviceTask id="ReleaseVoucher" name="Release Voucher">
       <bpmn:extensionElements>
@@ -170,12 +165,12 @@ response ;</camunda:script>
           <camunda:inputOutput>
             <camunda:inputParameter name="headers">
               <camunda:script scriptFormat="groovy">def h= [:]
-h['Authorization'] = System.getenv("APC_APP_API_TOKEN") 
+h['Authorization'] = System.getenv("APC_APP_API_TOKEN")
 h['Content-Type'] = 'application/json'
 h</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="url">
-              <camunda:script scriptFormat="groovy">System.getenv("APC_APP_BACKEND") + "workflow/vouchers/"+ reservedVoucher.id + "/release"</camunda:script>
+              <camunda:script scriptFormat="groovy">System.getenv("APC_APP_BACKEND") + "/workflow/vouchers/"+ reservedVoucher.id + "/release"</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="method">POST</camunda:inputParameter>
           </camunda:inputOutput>
@@ -185,49 +180,23 @@ h</camunda:script>
       <bpmn:incoming>Flow_0pcavu0</bpmn:incoming>
       <bpmn:outgoing>Flow_115rlss</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_1x2ija3" sourceRef="Activity_1fehoyf" targetRef="AutomaticApplicationRejection" />
-    <bpmn:serviceTask id="Activity_06g7sy7" name="Notify Voucher Allocation">
+    <bpmn:sequenceFlow id="Flow_1x2ija3" sourceRef="ReleaseBudget" targetRef="AutomaticApplicationRejection" />
+    <bpmn:sequenceFlow id="Flow_0upvj9t" sourceRef="AllocateVoucher" targetRef="NotifyVoucherAllocation" />
+    <bpmn:serviceTask id="AllocateVoucher" name="Allocate Voucher">
       <bpmn:extensionElements>
         <camunda:connector>
           <camunda:inputOutput>
             <camunda:inputParameter name="headers">
-              <camunda:script scriptFormat="groovy">def headers = [:] ; 
-headers.Authorization = System.getenv("APC_APP_API_TOKEN") ;
-headers</camunda:script>
-            </camunda:inputParameter>
-            <camunda:inputParameter name="payload">
-              <camunda:script scriptFormat="groovy">def postData = [:];
-postData.templateId= "Voucher_Final_Approved";
-postData.audiance = startedBy.email ; 
-postData.variables = execution.getVariables();
-S(postData, org.camunda.spin.DataFormats.json()).toString();</camunda:script>
-            </camunda:inputParameter>
-            <camunda:inputParameter name="url">
-              <camunda:script scriptFormat="groovy">System.getenv("APC_APP_BACKEND") + "/messages"</camunda:script>
-            </camunda:inputParameter>
-            <camunda:inputParameter name="method">post</camunda:inputParameter>
-          </camunda:inputOutput>
-          <camunda:connectorId>http-connector</camunda:connectorId>
-        </camunda:connector>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0upvj9t</bpmn:incoming>
-      <bpmn:outgoing>Flow_0gkdz2l</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_0upvj9t" sourceRef="Activity_1vp2yh4" targetRef="Activity_06g7sy7" />
-    <bpmn:serviceTask id="Activity_1vp2yh4" name="Allocate Voucher">
-      <bpmn:extensionElements>
-        <camunda:connector>
-          <camunda:inputOutput>
-            <camunda:inputParameter name="headers">
-              <camunda:script scriptFormat="groovy">def headers = [:] ; 
-headers.Authorization = System.getenv("APC_APP_API_TOKEN") ;
-headers</camunda:script>
+              <camunda:script scriptFormat="groovy">def h= [:]
+h['Authorization'] = System.getenv("APC_APP_API_TOKEN")
+h['Content-Type'] = 'application/json'
+h</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="url">
               <camunda:script scriptFormat="groovy">System.getenv("APC_APP_BACKEND") + "/workflow/vouchers/" + reservedVoucher.id +
  "/allocate"</camunda:script>
             </camunda:inputParameter>
-            <camunda:inputParameter name="method">post</camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
         </camunda:connector>
@@ -235,7 +204,7 @@ headers</camunda:script>
       <bpmn:incoming>Flow_1v7nv67</bpmn:incoming>
       <bpmn:outgoing>Flow_0upvj9t</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:startEvent id="Event_1u6dhdt" name="Start" camunda:formKey="http://localhost:3000/processes/apc/forms/Start.json" camunda:initiator="starter">
+    <bpmn:startEvent id="Start_APCFundRequest" name="Start" camunda:formKey="http://localhost:3000/processes/apc/forms/StartProcess.json" camunda:initiator="starter">
       <bpmn:outgoing>Flow_1gxdq84</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:serviceTask id="CreateFundApplication" name="Create Fund Application">
@@ -243,7 +212,7 @@ headers</camunda:script>
         <camunda:connector>
           <camunda:inputOutput>
             <camunda:inputParameter name="headers">
-              <camunda:script scriptFormat="groovy">def headers = [:] ; 
+              <camunda:script scriptFormat="groovy">def headers = [:] ;
 headers.Authorization = System.getenv("APC_APP_API_TOKEN") ;
 headers['Content-Type'] = 'application/json'
 headers</camunda:script>
@@ -252,15 +221,15 @@ headers</camunda:script>
               <camunda:script scriptFormat="groovy">def postData = [:];
 postData.articleTitle = articleTitle;
 postData.articleFile= articlePdfFile[0];
-postData.userId = starter ; 
+postData.userId = starter ;
 postData.policyId = selectedPolicy.id;
-postData.processInstanceId = execution.getProcessInstanceId() ; 
+postData.processInstanceId = execution.getProcessInstanceId() ;
 postData.fundId = selectedPolicy.fundId
 postData.publisherId = publisher.id
 postData.journalId = journal.id
 postData.affiliationId = affiliation.id
 j = S(postData, org.camunda.spin.DataFormats.json()).toString();
-println 'JSON payload:' + j 
+println 'JSON payload:' + j
 j</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="url">
@@ -269,48 +238,64 @@ j</camunda:script>
             <camunda:inputParameter name="method">POST</camunda:inputParameter>
             <camunda:outputParameter name="fundApplicationId">
               <camunda:script scriptFormat="groovy">if (statusCode != 200) {
-  println 'Bad statusCode received:' + statusCode ; 
+  println 'Bad statusCode received:' + statusCode ;
   throw new Exception('Failed to CreatedFund Application:' + response) ;
 }
 
-response ; </camunda:script>
+response ;</camunda:script>
             </camunda:outputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
         </camunda:connector>
-        <camunda:executionListener expression="${execution.setBusinessKey(fundApplicationId)}" event="end" />
+        <camunda:executionListener event="end">
+          <camunda:script scriptFormat="groovy">execution.setBusinessKey(fundApplicationId)
+def dt = "Fund Application for Policy %s. Publisher:%s, Journal:%s, Price:%s. (%s)"
+execution.setVariable('description' , String.format(dt, selectedPolicy.title,
+publisher.title, 
+journal.title, 
+publishPrice, 
+fundApplicationId )) ; 
+
+if (execution.getVariable('startedBy') == null) {
+  def sb = [:] ; 
+  sb.email = 'dev@example.com' ; 
+  sb.given_name = 'Test User' ; 
+  execution.setVariable('startedBy' , sb) ; 
+}</camunda:script>
+        </camunda:executionListener>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1gxdq84</bpmn:incoming>
       <bpmn:outgoing>Flow_002funy</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_1gxdq84" sourceRef="Event_1u6dhdt" targetRef="CreateFundApplication" />
+    <bpmn:sequenceFlow id="Flow_1gxdq84" sourceRef="Start_APCFundRequest" targetRef="CreateFundApplication" />
     <bpmn:sequenceFlow id="Flow_002funy" sourceRef="CreateFundApplication" targetRef="CheckApplicationType" />
-    <bpmn:sequenceFlow id="Flow_1f2ryxp" sourceRef="AutomaticApplicationRejection" targetRef="Event_1i0pb2k" />
-    <bpmn:serviceTask id="Activity_1hh27qu" name="Admin Application Rejection">
+    <bpmn:sequenceFlow id="Flow_1f2ryxp" sourceRef="AutomaticApplicationRejection" targetRef="ApplicationRejected" />
+    <bpmn:serviceTask id="AdminApplicationRejection" name="Admin Application Rejection">
       <bpmn:extensionElements>
         <camunda:connector>
           <camunda:inputOutput>
             <camunda:inputParameter name="headers">
-              <camunda:script scriptFormat="groovy">def headers = [:] ; 
-headers.Authorization = System.getenv("APC_APP_API_TOKEN") ;
-headers</camunda:script>
+              <camunda:script scriptFormat="groovy">def h= [:]
+h['Authorization'] = System.getenv("APC_APP_API_TOKEN")
+h['Content-Type'] = 'application/json'
+h</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="groovy">def postData = [:];
 postData.templateId= "Admin_Application_Rejection";
-postData.audiance = startedBy.email ; 
+postData.audiance = startedBy.email ;
 postData.variables = execution.getVariables();
 S(postData, org.camunda.spin.DataFormats.json()).toString();</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="url">
               <camunda:script scriptFormat="groovy">System.getenv("APC_APP_BACKEND") + "/messages"</camunda:script>
             </camunda:inputParameter>
-            <camunda:inputParameter name="method">post</camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
             <camunda:outputParameter name="reservedVoucher">
               <camunda:script scriptFormat="groovy">if (statusCode != 200) {
   throw new Exception(response.toString())
 }
-print response ; 
+print response ;
 response ;</camunda:script>
             </camunda:outputParameter>
           </camunda:inputOutput>
@@ -322,42 +307,27 @@ response ;</camunda:script>
       <bpmn:incoming>Flow_0e4shca</bpmn:incoming>
       <bpmn:outgoing>Flow_0rdk82g</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_0e4shca" name="Reject" sourceRef="Gateway_1m3ypqa" targetRef="Activity_1hh27qu">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${preApprovalDecision == 'reject'}</bpmn:conditionExpression>
+    <bpmn:sequenceFlow id="Flow_0e4shca" name="Reject" sourceRef="InvoicePreApproveDecision" targetRef="AdminApplicationRejection">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${preApprovalDecision== 'reject'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:userTask id="ProcessPayment" name="Process Payment" camunda:formKey="http://localhosto:3000/processes/apc/forms/ProcessPayment.json" camunda:candidateGroups="${&#34;FundFinanceManager_&#34; + selectedPolicy.fundId}">
+    <bpmn:userTask id="ProcessPayment" name="Process Payment" camunda:formKey="http://localhost:3000/processes/apc/forms/ProcessPayment.json" camunda:candidateGroups="${&#39;FundFinanceManager&#39;}${selectedPolicy.fundId.toString()}">
       <bpmn:incoming>Flow_1b9lamc</bpmn:incoming>
       <bpmn:outgoing>Flow_1ypuxnb</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:serviceTask id="Activity_1y5y5ae" name="Create Payment Record">
+    <bpmn:serviceTask id="CreatePaymentRecord" name="Create Payment Record">
       <bpmn:extensionElements>
         <camunda:connector>
           <camunda:inputOutput>
             <camunda:inputParameter name="headers">
-              <camunda:script scriptFormat="groovy">def headers = [:] ; 
-headers.Authorization = System.getenv("APC_APP_API_TOKEN") ;
-headers</camunda:script>
-            </camunda:inputParameter>
-            <camunda:inputParameter name="payload">
-              <camunda:script scriptFormat="groovy">def postData = [:];
-postData.policyId = selectedPolicy.policyId;
-postData.journal= journal.id;
-postData.affiliationId = affiliation.id;
-postData.userId = authenticatedUserId;
-postData.processInstanceId = execution.id ; 
-S(postData, org.camunda.spin.DataFormats.json()).toString();</camunda:script>
+              <camunda:script scriptFormat="groovy">def h= [:]
+h['Authorization'] = System.getenv("APC_APP_API_TOKEN")
+h['Content-Type'] = 'application/json'
+h</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="url">
-              <camunda:script scriptFormat="groovy">System.getenv("APC_APP_BACKEND") + "/voucher/reserve"</camunda:script>
+              <camunda:script scriptFormat="groovy">System.getenv("APC_APP_BACKEND") + "/workflow/organizations"</camunda:script>
             </camunda:inputParameter>
-            <camunda:inputParameter name="method">post</camunda:inputParameter>
-            <camunda:outputParameter name="reservedVoucher">
-              <camunda:script scriptFormat="groovy">if (statusCode != 200) {
-  throw new Exception(response.toString())
-}
-print response ; 
-response ;</camunda:script>
-            </camunda:outputParameter>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
         </camunda:connector>
@@ -365,56 +335,43 @@ response ;</camunda:script>
       <bpmn:incoming>Flow_1ypuxnb</bpmn:incoming>
       <bpmn:outgoing>Flow_0tkdifu</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:userTask id="Activity_17aen8v" name="Approve Invoice" camunda:formKey="http://localhosto:3000/processes/apc/forms/InvoiceApprove.json" camunda:candidateGroups="${&#34;FundManager_&#34; + selectedPolicy.fundId}">
+    <bpmn:userTask id="InvoiceApprove" name="Approve Invoice" camunda:formKey="http://localhost:3000/processes/apc/forms/InvoiceApprove.json" camunda:candidateGroups="${&#39;FundManager&#39;}${selectedPolicy.fundId.toString()}">
       <bpmn:incoming>Flow_1a4bngn</bpmn:incoming>
       <bpmn:outgoing>Flow_103sia2</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_1p042h4" name="Upload Journal Invoice" camunda:formKey="http://localhosto:3000/processes/apc/forms/UploadJournalInvoice.json" camunda:assignee="${starter}">
+    <bpmn:userTask id="UploadJournalInvoice" name="Upload Journal Invoice" camunda:formKey="http://localhost:3000/processes/apc/forms/UploadJournalInvoice.json" camunda:assignee="${starter}">
       <bpmn:incoming>Flow_1w4zt27</bpmn:incoming>
       <bpmn:incoming>Flow_1y0jojh</bpmn:incoming>
       <bpmn:outgoing>Flow_1a4bngn</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:boundaryEvent id="Event_11vdth5" name="Upload Invoice Reminder" cancelActivity="false" attachedToRef="Activity_1p042h4">
+    <bpmn:boundaryEvent id="UploadInvoiceReminder" name="Upload Invoice Reminder" cancelActivity="false" attachedToRef="UploadJournalInvoice">
       <bpmn:outgoing>Flow_00oi62a</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_0zi1hgf">
         <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P30D</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
-    <bpmn:boundaryEvent id="Event_0h0bt2v" name="No Response from Researcher (Invoice)" attachedToRef="Activity_1p042h4">
+    <bpmn:boundaryEvent id="NoResponseInvoiceFinal" name="No Response from Researcher (Invoice)" attachedToRef="UploadJournalInvoice">
       <bpmn:outgoing>Flow_0upn6zh</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_00yfl90">
         <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P60D</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
-    <bpmn:serviceTask id="Activity_0qcojo8" name="Reserve Budget">
+    <bpmn:serviceTask id="ReserveBudget" name="Reserve Budget">
       <bpmn:extensionElements>
         <camunda:connector>
           <camunda:inputOutput>
             <camunda:inputParameter name="headers">
               <camunda:script scriptFormat="groovy">def h= [:]
-h['Authorization'] = System.getenv("APC_APP_API_TOKEN") 
+h['Authorization'] = System.getenv("APC_APP_API_TOKEN")
 h['Content-Type'] = 'application/json'
 h</camunda:script>
             </camunda:inputParameter>
-            <camunda:inputParameter name="payload">
-              <camunda:script scriptFormat="groovy">def postData = [:];
-postData.policyId = selectedPolicy.policyId;
-postData.journal= journal.id;
-postData.affiliationId = affiliation.id;
-postData.userId = authenticatedUserId;
-postData.processInstanceId = execution.id ; 
-S(postData, org.camunda.spin.DataFormats.json()).toString();</camunda:script>
-            </camunda:inputParameter>
             <camunda:inputParameter name="url">
-              <camunda:script scriptFormat="groovy">System.getenv("APC_APP_BACKEND") + "/voucher/reserve"</camunda:script>
+              <camunda:script scriptFormat="groovy">System.getenv("APC_APP_BACKEND") + "/workflow/organizations"</camunda:script>
             </camunda:inputParameter>
-            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
             <camunda:outputParameter name="reservedBudget">
-              <camunda:script scriptFormat="groovy">if (statusCode != 200) {
-  throw new Exception(response.toString())
-}
-print response ; 
-response ;</camunda:script>
+              <camunda:script scriptFormat="groovy">'dummy'</camunda:script>
             </camunda:outputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
@@ -423,26 +380,27 @@ response ;</camunda:script>
       <bpmn:incoming>Flow_0r16lfo</bpmn:incoming>
       <bpmn:outgoing>Flow_1y0jojh</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_1czyaia" name="Notify Invoice Payment">
+    <bpmn:serviceTask id="NotifyInvoicePayment" name="Notify Invoice Payment">
       <bpmn:extensionElements>
         <camunda:connector>
           <camunda:inputOutput>
             <camunda:inputParameter name="headers">
-              <camunda:script scriptFormat="groovy">def headers = [:] ; 
-headers.Authorization = System.getenv("APC_APP_API_TOKEN") ;
-headers</camunda:script>
+              <camunda:script scriptFormat="groovy">def h= [:]
+h['Authorization'] = System.getenv("APC_APP_API_TOKEN")
+h['Content-Type'] = 'application/json'
+h</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="groovy">def postData = [:];
 postData.templateId= "Invoice_Payment";
-postData.audiance = startedBy.email ; 
+postData.audiance = startedBy.email ;
 postData.variables = execution.getVariables();
 S(postData, org.camunda.spin.DataFormats.json()).toString();</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="url">
               <camunda:script scriptFormat="groovy">System.getenv("APC_APP_BACKEND") + "/messages"</camunda:script>
             </camunda:inputParameter>
-            <camunda:inputParameter name="method">post</camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
         </camunda:connector>
@@ -450,11 +408,11 @@ S(postData, org.camunda.spin.DataFormats.json()).toString();</camunda:script>
       <bpmn:incoming>Flow_0tkdifu</bpmn:incoming>
       <bpmn:outgoing>Flow_1ctw91h</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:userTask id="VoucherApprove" name="Approve Voucher" camunda:formKey="http://localhosto:3000/processes/apc/forms/ApproveVoucher.json" camunda:candidateGroups="${&#39;FundManager_&#39;}${selectedPolicy.fundId.toString()}">
+    <bpmn:userTask id="VoucherApprove" name="Approve Voucher" camunda:formKey="http://localhost:3000/processes/apc/forms/VoucherApprove.json" camunda:candidateGroups="${&#39;FundManager&#39;}${selectedPolicy.fundId.toString()}">
       <bpmn:incoming>Flow_078ltmx</bpmn:incoming>
       <bpmn:outgoing>Flow_1tk54p2</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:endEvent id="Event_1i0pb2k">
+    <bpmn:endEvent id="ApplicationRejected" name="Fund Application Rejected">
       <bpmn:incoming>Flow_1f2ryxp</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:serviceTask id="AutomaticApplicationRejection" name="Automatic Application Rejection">
@@ -462,21 +420,22 @@ S(postData, org.camunda.spin.DataFormats.json()).toString();</camunda:script>
         <camunda:connector>
           <camunda:inputOutput>
             <camunda:inputParameter name="headers">
-              <camunda:script scriptFormat="groovy">def headers = [:] ; 
-headers.Authorization = System.getenv("APC_APP_API_TOKEN") ;
-headers</camunda:script>
+              <camunda:script scriptFormat="groovy">def h= [:]
+h['Authorization'] = System.getenv("APC_APP_API_TOKEN")
+h['Content-Type'] = 'application/json'
+h</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="groovy">def postData = [:];
 postData.templateId= "Application_Automatic_Rejection";
-postData.audiance = startedBy.email ; 
+postData.audiance = startedBy.email ;
 postData.variables = execution.getVariables();
 S(postData, org.camunda.spin.DataFormats.json()).toString();</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="url">
               <camunda:script scriptFormat="groovy">System.getenv("APC_APP_BACKEND") + "/messages"</camunda:script>
             </camunda:inputParameter>
-            <camunda:inputParameter name="method">post</camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
         </camunda:connector>
@@ -485,13 +444,13 @@ S(postData, org.camunda.spin.DataFormats.json()).toString();</camunda:script>
       <bpmn:incoming>Flow_1x2ija3</bpmn:incoming>
       <bpmn:outgoing>Flow_1f2ryxp</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_1fehoyf" name="Release Budget">
+    <bpmn:serviceTask id="ReleaseBudget" name="Release Budget">
       <bpmn:extensionElements>
         <camunda:connector>
           <camunda:inputOutput>
             <camunda:inputParameter name="headers">
               <camunda:script scriptFormat="groovy">def h= [:]
-h['Authorization'] = System.getenv("APC_APP_API_TOKEN") 
+h['Authorization'] = System.getenv("APC_APP_API_TOKEN")
 h['Content-Type'] = 'application/json'
 h</camunda:script>
             </camunda:inputParameter>
@@ -501,7 +460,7 @@ postData.policyId = selectedPolicy.policyId;
 postData.journal= journal.id;
 postData.affiliationId = affiliation.id;
 postData.userId = authenticatedUserId;
-postData.processInstanceId = execution.id ; 
+postData.processInstanceId = execution.id ;
 S(postData, org.camunda.spin.DataFormats.json()).toString();</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="url">
@@ -512,7 +471,7 @@ S(postData, org.camunda.spin.DataFormats.json()).toString();</camunda:script>
               <camunda:script scriptFormat="groovy">if (statusCode != 200) {
   throw new Exception(response.toString())
 }
-print response ; 
+print response ;
 response ;</camunda:script>
             </camunda:outputParameter>
           </camunda:inputOutput>
@@ -528,26 +487,26 @@ response ;</camunda:script>
           <camunda:inputOutput>
             <camunda:inputParameter name="headers">
               <camunda:script scriptFormat="groovy">def h= [:]
-h['Authorization'] = System.getenv("APC_APP_API_TOKEN") 
+h['Authorization'] = System.getenv("APC_APP_API_TOKEN")
 h['Content-Type'] = 'application/json'
 h</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="groovy">def postData = [:];
 postData.templateId= "Upload_Document_Reminder";
-postData.audiance = startedBy.email ; 
+postData.audiance = startedBy.email ;
 postData.variables = execution.getVariables();
 S(postData, org.camunda.spin.DataFormats.json()).toString();</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="url">
-              <camunda:script scriptFormat="groovy">System.getEnv("APC_APP_BACKEND") + "/messages"</camunda:script>
+              <camunda:script scriptFormat="groovy">System.getenv("APC_APP_BACKEND") + "/messages"</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="method">POST</camunda:inputParameter>
             <camunda:outputParameter name="reservedVoucher">
               <camunda:script scriptFormat="groovy">if (statusCode != 200) {
   throw new Exception(response.toString())
 }
-print response ; 
+print response ;
 response ;</camunda:script>
             </camunda:outputParameter>
           </camunda:inputOutput>
@@ -557,23 +516,57 @@ response ;</camunda:script>
       <bpmn:incoming>Flow_1b8ib5x</bpmn:incoming>
       <bpmn:incoming>Flow_00oi62a</bpmn:incoming>
     </bpmn:serviceTask>
-    <bpmn:userTask id="InvoicePreApprove" name="Pre Approve Invoice Payment" camunda:formKey="http://localhosto:3000/processes/apc/forms/InvoicePreApprove.json" camunda:candidateGroups="${&#34;FundManager_&#34; + selectedPolicy.fundId}">
+    <bpmn:userTask id="InvoicePreApprove" name="Pre Approve Invoice Payment" camunda:formKey="http://localhost:3000/processes/apc/forms/InvoicePreApprove.json" camunda:candidateGroups="${&#39;FundManager&#39;}${selectedPolicy.fundId.toString()}">
       <bpmn:incoming>Flow_1j03gwi</bpmn:incoming>
       <bpmn:outgoing>Flow_1t6j7c7</bpmn:outgoing>
     </bpmn:userTask>
+    <bpmn:serviceTask id="NotifyVoucherAllocation" name="Notify Voucher Allocation">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="headers">
+              <camunda:script scriptFormat="groovy">def h= [:]
+h['Authorization'] = System.getenv("APC_APP_API_TOKEN")
+h['Content-Type'] = 'application/json'
+h</camunda:script>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="payload">
+              <camunda:script scriptFormat="groovy">def postData = [:];
+postData.templateId= "Voucher_Final_Approved";
+postData.audiance = startedBy.email ;
+postData.variables = execution.getVariables();
+S(postData, org.camunda.spin.DataFormats.json()).toString();
+</camunda:script>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">
+              <camunda:script scriptFormat="groovy">System.getenv("APC_APP_BACKEND") + "/messages"</camunda:script>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0upvj9t</bpmn:incoming>
+      <bpmn:outgoing>Flow_0gkdz2l</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="FundAllocated" name="Fund Allocated">
+      <bpmn:incoming>Flow_1ctw91h</bpmn:incoming>
+      <bpmn:incoming>Flow_0gkdz2l</bpmn:incoming>
+      <bpmn:incoming>Flow_0rdk82g</bpmn:incoming>
+    </bpmn:endEvent>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_13s69cp">
       <bpmndi:BPMNShape id="Participant_0ezca0x_di" bpmnElement="Participant_0ezca0x" isHorizontal="true">
         <dc:Bounds x="140" y="85" width="1300" height="1065" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_08jaq41_di" bpmnElement="Lane_08jaq41" isHorizontal="true">
+      <bpmndi:BPMNShape id="Lane_08jaq41_di" bpmnElement="ResearcherLane" isHorizontal="true">
         <dc:Bounds x="170" y="85" width="1270" height="410" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_0j48sxm_di" bpmnElement="Lane_0j48sxm" isHorizontal="true">
+      <bpmndi:BPMNShape id="Lane_0j48sxm_di" bpmnElement="FundManagerLane" isHorizontal="true">
         <dc:Bounds x="170" y="495" width="1270" height="390" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_1hentpr_di" bpmnElement="Lane_1hentpr" isHorizontal="true">
+      <bpmndi:BPMNShape id="Lane_1hentpr_di" bpmnElement="FundFinancialManagerLane" isHorizontal="true">
         <dc:Bounds x="170" y="885" width="1270" height="265" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0e4shca_di" bpmnElement="Flow_0e4shca">
@@ -598,8 +591,8 @@ response ;</camunda:script>
         <di:waypoint x="260" y="165" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0upvj9t_di" bpmnElement="Flow_0upvj9t">
-        <di:waypoint x="1220" y="595" />
-        <di:waypoint x="1220" y="635" />
+        <di:waypoint x="1230" y="595" />
+        <di:waypoint x="1230" y="635" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1x2ija3_di" bpmnElement="Flow_1x2ija3">
         <di:waypoint x="1140" y="390" />
@@ -620,21 +613,21 @@ response ;</camunda:script>
         <di:waypoint x="1000" y="580" />
         <di:waypoint x="1000" y="680" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1000" y="627" width="32" height="14" />
+          <dc:Bounds x="1014" y="627" width="32" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0rdk82g_di" bpmnElement="Flow_0rdk82g">
         <di:waypoint x="1060" y="700" />
         <di:waypoint x="1120" y="700" />
         <di:waypoint x="1120" y="815" />
-        <di:waypoint x="1202" y="815" />
+        <di:waypoint x="1212" y="815" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1846v0b_di" bpmnElement="Flow_1846v0b">
         <di:waypoint x="760" y="690" />
-        <di:waypoint x="760" y="720" />
-        <di:waypoint x="960" y="720" />
+        <di:waypoint x="760" y="740" />
+        <di:waypoint x="960" y="740" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="759" y="702" width="32" height="14" />
+          <dc:Bounds x="824" y="720" width="32" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0mofyac_di" bpmnElement="Flow_0mofyac">
@@ -650,13 +643,13 @@ response ;</camunda:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_00oi62a_di" bpmnElement="Flow_00oi62a">
         <di:waypoint x="698" y="450" />
-        <di:waypoint x="890" y="450" />
-        <di:waypoint x="890" y="360" />
+        <di:waypoint x="900" y="450" />
+        <di:waypoint x="900" y="360" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1b8ib5x_di" bpmnElement="Flow_1b8ib5x">
         <di:waypoint x="878" y="205" />
-        <di:waypoint x="920" y="205" />
-        <di:waypoint x="920" y="280" />
+        <di:waypoint x="900" y="205" />
+        <di:waypoint x="900" y="280" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0pcavu0_di" bpmnElement="Flow_0pcavu0">
         <di:waypoint x="878" y="145" />
@@ -675,7 +668,7 @@ response ;</camunda:script>
         <di:waypoint x="760" y="410" />
         <di:waypoint x="680" y="410" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="759" y="522" width="34" height="14" />
+          <dc:Bounds x="713" y="543" width="34" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1b9lamc_di" bpmnElement="Flow_1b9lamc">
@@ -698,7 +691,7 @@ response ;</camunda:script>
       <bpmndi:BPMNEdge id="Flow_1ctw91h_di" bpmnElement="Flow_1ctw91h">
         <di:waypoint x="1120" y="920" />
         <di:waypoint x="1120" y="815" />
-        <di:waypoint x="1202" y="815" />
+        <di:waypoint x="1212" y="815" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_078ltmx_di" bpmnElement="Flow_078ltmx">
         <di:waypoint x="810" y="205" />
@@ -725,15 +718,15 @@ response ;</camunda:script>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0gkdz2l_di" bpmnElement="Flow_0gkdz2l">
-        <di:waypoint x="1220" y="715" />
-        <di:waypoint x="1220" y="797" />
+        <di:waypoint x="1230" y="715" />
+        <di:waypoint x="1230" y="797" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1j03gwi_di" bpmnElement="Flow_1j03gwi">
         <di:waypoint x="430" y="190" />
         <di:waypoint x="430" y="550" />
         <di:waypoint x="310" y="550" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="428" y="367" width="35" height="14" />
+          <dc:Bounds x="442" y="333" width="35" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1t6j7c7_di" bpmnElement="Flow_1t6j7c7">
@@ -756,28 +749,25 @@ response ;</camunda:script>
       <bpmndi:BPMNShape id="Activity_1hc6zzo_di" bpmnElement="ReserveVoucher">
         <dc:Bounds x="550" y="125" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1vazn45_di" bpmnElement="Event_1vazn45">
-        <dc:Bounds x="1202" y="797" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1lscnvb_di" bpmnElement="CheckAdminResponse" isMarkerVisible="true">
         <dc:Bounds x="975" y="530" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="968" y="587" width="66" height="27" />
+          <dc:Bounds x="1007" y="506" width="66" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_06xg2r3_di" bpmnElement="UploadAcceptance">
         <dc:Bounds x="760" y="125" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0535xvu_di" bpmnElement="Gateway_0535xvu" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="Gateway_0535xvu_di" bpmnElement="CheckInvoiceApproval" isMarkerVisible="true">
         <dc:Bounds x="735" y="640" width="50" height="50" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="795" y="651" width="70" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_1m3ypqa_di" bpmnElement="Gateway_1m3ypqa" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="Gateway_1m3ypqa_di" bpmnElement="InvoicePreApproveDecision" isMarkerVisible="true">
         <dc:Bounds x="315" y="630" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="297" y="592.5" width="86" height="27" />
+          <dc:Bounds x="297" y="604" width="87" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1f90o54_di" bpmnElement="CheckApplicationType" isMarkerVisible="true">
@@ -789,52 +779,52 @@ response ;</camunda:script>
       <bpmndi:BPMNShape id="Activity_0nkl713_di" bpmnElement="ReleaseVoucher">
         <dc:Bounds x="1040" y="125" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_06g7sy7_di" bpmnElement="Activity_06g7sy7">
-        <dc:Bounds x="1170" y="635" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1vp2yh4_di" bpmnElement="Activity_1vp2yh4">
+      <bpmndi:BPMNShape id="Activity_1vp2yh4_di" bpmnElement="AllocateVoucher">
         <dc:Bounds x="1180" y="515" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1u6dhdt_di" bpmnElement="Event_1u6dhdt">
+      <bpmndi:BPMNShape id="Event_1u6dhdt_di" bpmnElement="Start_APCFundRequest">
         <dc:Bounds x="182" y="147" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="188" y="190" width="25" height="14" />
+          <dc:Bounds x="189" y="190" width="24" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0iwyfn1_di" bpmnElement="CreateFundApplication">
         <dc:Bounds x="260" y="125" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1hh27qu_di" bpmnElement="Activity_1hh27qu">
+      <bpmndi:BPMNShape id="Activity_1hh27qu_di" bpmnElement="AdminApplicationRejection">
         <dc:Bounds x="960" y="680" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_120y0le_di" bpmnElement="ProcessPayment">
         <dc:Bounds x="580" y="920" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1y5y5ae_di" bpmnElement="Activity_1y5y5ae">
+      <bpmndi:BPMNShape id="Activity_1y5y5ae_di" bpmnElement="CreatePaymentRecord">
         <dc:Bounds x="810" y="920" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0lp7xz8_di" bpmnElement="Activity_17aen8v">
+      <bpmndi:BPMNShape id="Activity_0lp7xz8_di" bpmnElement="InvoiceApprove">
         <dc:Bounds x="580" y="625" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1p042h4_di" bpmnElement="Activity_1p042h4">
+      <bpmndi:BPMNShape id="Activity_1p042h4_di" bpmnElement="UploadJournalInvoice">
         <dc:Bounds x="580" y="370" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0qcojo8_di" bpmnElement="Activity_0qcojo8">
+      <bpmndi:BPMNShape id="Activity_0qcojo8_di" bpmnElement="ReserveBudget">
         <dc:Bounds x="460" y="515" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1czyaia_di" bpmnElement="Activity_1czyaia">
+      <bpmndi:BPMNShape id="Activity_1czyaia_di" bpmnElement="NotifyInvoicePayment">
         <dc:Bounds x="1070" y="920" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1uqo46i_di" bpmnElement="VoucherApprove">
         <dc:Bounds x="840" y="515" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1i0pb2k_di" bpmnElement="Event_1i0pb2k">
+      <bpmndi:BPMNShape id="Event_1i0pb2k_di" bpmnElement="ApplicationRejected">
         <dc:Bounds x="1272" y="252" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1251" y="295" width="82" height="27" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1imtfzq_di" bpmnElement="AutomaticApplicationRejection">
         <dc:Bounds x="1135" y="230" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1fehoyf_di" bpmnElement="Activity_1fehoyf">
+      <bpmndi:BPMNShape id="Activity_1fehoyf_di" bpmnElement="ReleaseBudget">
         <dc:Bounds x="1040" y="350" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1y8melg_di" bpmnElement="NotifyUploadDocumentReminder">
@@ -843,28 +833,37 @@ response ;</camunda:script>
       <bpmndi:BPMNShape id="Activity_17v42v2_di" bpmnElement="InvoicePreApprove">
         <dc:Bounds x="210" y="510" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0h0bt2v_di" bpmnElement="Event_0h0bt2v">
-        <dc:Bounds x="662" y="372" width="36" height="36" />
+      <bpmndi:BPMNShape id="Activity_06g7sy7_di" bpmnElement="NotifyVoucherAllocation">
+        <dc:Bounds x="1180" y="635" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1vazn45_di" bpmnElement="FundAllocated">
+        <dc:Bounds x="1212" y="797" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="640" y="415" width="83" height="40" />
+          <dc:Bounds x="1196" y="840" width="74" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_11vdth5_di" bpmnElement="Event_11vdth5">
+      <bpmndi:BPMNShape id="Event_0h0bt2v_di" bpmnElement="NoResponseInvoiceFinal">
+        <dc:Bounds x="662" y="372" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="658" y="330" width="83" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_11vdth5_di" bpmnElement="UploadInvoiceReminder">
         <dc:Bounds x="662" y="432" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="645" y="475" width="73" height="27" />
+          <dc:Bounds x="645" y="466" width="73" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0wf8taa_di" bpmnElement="UploadDocumentReminder">
         <dc:Bounds x="842" y="187" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="815" y="232.5" width="89" height="27" />
+          <dc:Bounds x="815" y="226" width="89" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1lidwcq_di" bpmnElement="NoResponseFinal">
+      <bpmndi:BPMNShape id="Event_1lidwcq_di" bpmnElement="NoResponseVoucherFinal">
         <dc:Bounds x="842" y="127" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="821" y="170" width="83" height="40" />
+          <dc:Bounds x="858" y="90" width="83" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>

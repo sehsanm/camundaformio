@@ -1,0 +1,19 @@
+[
+    {
+        "bankAccountName": "ABC Account",
+        "bankAccountNumber": "22323",
+        "transactionReference": "1122",
+        "paymentDate": "01/03/2021",
+        "paymentReceipt": [
+            {
+                "storage": "base64",
+                "name": "empty-43b24d08-9004-4a1b-a2ae-bbb90325ecae.pdf",
+                "url": "data:application/pdf;base64,MTIzNA==",
+                "size": 4,
+                "type": "application/pdf",
+                "originalName": "empty.pdf"
+            }
+        ],
+        "submit": true
+    }
+]

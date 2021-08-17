@@ -1,0 +1,9 @@
+[
+    {
+        "preApprovalDecision": "approve",
+        "approvedCurrency": "USD",
+        "decisionNote": "65656",
+        "submit": true,
+        "approvedBudget": 100
+    }
+]

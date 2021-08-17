@@ -42,7 +42,7 @@ function FormSubmit() {
     }
 
     const submitForm = () => {
-        submitData(submission.data, true) ; 
+        submitData({ data: submission.data}, true) ; 
     }
 
     return (

@@ -33,5 +33,15 @@ It will run server on  port 3000
 
 ## Camunda Modeller 
 
-In modeller in order to allow integration with tasklist application  you can specify following Form Key for the form. This will force the  Tasklist application to open form in our fontend application   http://localhost:3000/forms/:folderName/:formName.json  
+In modeller in order to allow integration with tasklist application  you can specify following Form Key for the form. This will force the  Tasklist application to open form in our fontend application   http://localhost:3000/processes/:processName/forms/:formName.json  
+
+
+# Form Settings and Variables: 
+
+If you supposed to get an external data for the form, you can  use  {form.variables.your_variable} in the form creation and later on the backend once want to serve the form it overrides these values. 
+
+# Accessing Process Variables 
+
+If you want to access process variables (other than data) You should use them in form like {form.processVariables.your_process_variable} 
+
 
